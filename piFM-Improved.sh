@@ -19,8 +19,13 @@ function play()
 }
 
 frequence="104.2";
-dossier="~/.pifm-improved/";
+dossier="/home/"`whoami`"/.pifm-improved/";
 option="";
+
+if [ ! -e "$dossier" ]
+then
+	sudo mkdir "$dossier";
+fi
 
 #analyse et traitement des paramètres
 while [ $# -ne 0 ]
