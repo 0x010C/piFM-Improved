@@ -17,6 +17,7 @@ void di_init()
 	/*Mise en place des paires de couleurs*/
 	init_pair(1, COLOR_WHITE, COLOR_CYAN); /*1*/
 	init_pair(2, COLOR_WHITE, COLOR_BLACK); /*2*/
+	init_pair(2, COLOR_GREEN, COLOR_CYAN); /*3*/
 }
 
 void di_refresh()
@@ -26,7 +27,33 @@ void di_refresh()
 
 void di_updatePlaylist(int firstIndex, int selectedIndex, int playedIndex)
 {
+	int i, j;
 
+	attron(COLOR_PAIR(1));
+	for(i=0;i<height-2;i++)
+	{
+		if(playlist->nbFile > i+firstIndex)
+		{
+			if(selectedIndex == i+firstIndex)
+				attron(COLOR_PAIR(2));
+			if(playedIndex == i+firstIndex)
+				attron(COLOR_PAIR(3));
+			for(j=0;j<min(strlen(playlist->list[i+firstIndex]),sizeRight-2);j++)
+				mvprintw(i+1,j+sizeLeft+1,"%c",playlist->list[i+firstIndex][j]);
+			for(;j<sizeRight-2;j++)
+				mvprintw(i+1,j+sizeLeft+1," ");
+			if(selectedIndex == i+firstIndex || playedIndex == i+firstIndex)
+				attron(COLOR_PAIR(1));
+		}
+		else
+		{
+			for(j=0;j<sizeRight-2;j++)
+				mvprintw(i+1,j+sizeLeft+1," ");
+		}
+	}
+	attroff(COLOR_PAIR(1));
+
+	di_refresh();
 }
 
 void di_updateFilelist(int firstIndex, int selectedIndex)
