@@ -20,7 +20,7 @@
  */
 void di_init();
 void di_refresh();
-void di_updatePlayList(int firstIndex, int selectedIndex);
+void di_updatePlayList(int firstIndex, int selectedIndex, int playedIndex);
 void di_updateFileList(int firstIndex, int selectedIndex);
 void di_updateBoxing();
 void di_end();

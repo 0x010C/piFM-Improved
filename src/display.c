@@ -1,10 +1,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <ncurses.h>
+#include <string.h>
 
 #include "display.h"
 
-void startDisplay()
+void di_init()
 {
 	/*Initialisation de ncurses*/
 	initscr();
@@ -18,17 +19,17 @@ void startDisplay()
 	init_pair(2, COLOR_WHITE, COLOR_BLACK); /*2*/
 }
 
-void refreshDisplay()
+void di_refresh()
 {
 	refresh();
 }
 
-void updatePlaylist()
+void di_updatePlaylist(int firstIndex, int selectedIndex, int playedIndex)
 {
 
 }
 
-void updateFilelist(FileList *filelist, int firstIndex, int selectedIndex)
+void di_updateFilelist(int firstIndex, int selectedIndex)
 {
 	int i, j;
 
@@ -54,41 +55,35 @@ void updateFilelist(FileList *filelist, int firstIndex, int selectedIndex)
 	}
 	attroff(COLOR_PAIR(1));
 
-	refresh();
+	di_refresh();
 }
 
-void updateBoxing()
+void di_updateBoxing(char *title1, char *title2)
 {
-	int i=0, j=0;
-	char *chaine = (char*) malloc(sizeof(char)*9);
-	strcpy(chaine, "Music\0");
+	int i=0;
 
 	attron(COLOR_PAIR(1));
 
 	/* Haut gauche */
-	//mvprintw(0,0,"+");
-	move(0,0);
-	addstr("┌");
-	for(i=0;i<(sizeLeft-4-strlen(chaine))/2;i++)
-		mvprintw(0,i+1,"%c",'o');
-	mvprintw(0,(sizeLeft-4-strlen(chaine))/2+1,"|");
-	mvprintw(0,(sizeLeft-4-strlen(chaine))/2+2,"%s",chaine);
-	mvprintw(0,(sizeLeft-4-strlen(chaine))/2+2+strlen(chaine),"|");
-	for(i=0;i<(sizeLeft-4-strlen(chaine))/2+((sizeLeft-4-strlen(chaine))%2 == 1);i++)
-		mvprintw(0,i+(sizeLeft-4-strlen(chaine))/2+3+strlen(chaine),"-");
+	mvprintw(0,0,"+");
+	for(i=0;i<(sizeLeft-4-strlen(title1))/2;i++)
+		mvprintw(0,i+1,"-");
+	mvprintw(0,(sizeLeft-4-strlen(title1))/2+1,"|");
+	mvprintw(0,(sizeLeft-4-strlen(title1))/2+2,"%s",title1);
+	mvprintw(0,(sizeLeft-4-strlen(title1))/2+2+strlen(title1),"|");
+	for(i=0;i<(sizeLeft-4-strlen(title1))/2+((sizeLeft-4-strlen(title1))%2 == 1);i++)
+		mvprintw(0,i+(sizeLeft-4-strlen(title1))/2+3+strlen(title1),"-");
 	mvprintw(0,sizeLeft-1,"+");
 
 	/* Haut droit */
-	strcpy(chaine, "Playlist\0");
-
 	mvprintw(0,sizeLeft,"+");
-	for(i=0;i<(sizeRight-4-strlen(chaine))/2;i++)
+	for(i=0;i<(sizeRight-4-strlen(title2))/2;i++)
 		mvprintw(0,sizeLeft+i+1,"-");
-	mvprintw(0,sizeLeft+(sizeRight-4-strlen(chaine))/2+1,"|");
-	mvprintw(0,sizeLeft+(sizeRight-4-strlen(chaine))/2+2,"%s",chaine);
-	mvprintw(0,sizeLeft+(sizeRight-4-strlen(chaine))/2+2+strlen(chaine),"|");
-	for(i=0;i<(sizeRight-4-strlen(chaine))/2+((sizeRight-4-strlen(chaine))%2 == 1);i++)
-		mvprintw(0,sizeLeft+i+(sizeRight-4-strlen(chaine))/2+3+strlen(chaine),"-");
+	mvprintw(0,sizeLeft+(sizeRight-4-strlen(title2))/2+1,"|");
+	mvprintw(0,sizeLeft+(sizeRight-4-strlen(title2))/2+2,"%s",title2);
+	mvprintw(0,sizeLeft+(sizeRight-4-strlen(title2))/2+2+strlen(title2),"|");
+	for(i=0;i<(sizeRight-4-strlen(title2))/2+((sizeRight-4-strlen(title2))%2 == 1);i++)
+		mvprintw(0,sizeLeft+i+(sizeRight-4-strlen(title2))/2+3+strlen(title2),"-");
 	mvprintw(0,sizeLeft+sizeRight-1,"+");
 
 	/* Centre */
@@ -96,14 +91,8 @@ void updateBoxing()
 	{
 		mvprintw(i,0,"|");
 
-		//for(j=0;j<sizeLeft-2;j++)
-		//	mvprintw(i,j+1," ");
-
 		mvprintw(i,sizeLeft-1,"|");
 		mvprintw(i,sizeLeft,"|");
-
-		//for(j=0;j<sizeRight-2;j++)
-		//	mvprintw(i,j+sizeLeft+1," ");
 
 		mvprintw(i,sizeLeft+sizeRight-1,"|");
 	}
@@ -120,12 +109,10 @@ void updateBoxing()
 
 	attroff(COLOR_PAIR(1));
 
-	refresh();
-	
-	free(chaine);
+	di_refresh();
 }
 
-void stopDisplay()
+void di_end()
 {
 	endwin();
 }
