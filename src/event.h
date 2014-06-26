@@ -10,6 +10,6 @@
 /*
  * Functions' header
  */
-int eventManager();
+int ev_loop();
 
 #endif

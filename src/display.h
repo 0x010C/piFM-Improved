@@ -18,12 +18,12 @@
 /*
  * Functions' header
  */
-void startDisplay();
-void refreshDisplay();
-void updatePlaylist();
-void updateFilelist(FileList *filelist, int firstIndex, int selectedIndex);
-void updateBoxing();
-void stopDisplay();
+void di_init();
+void di_refresh();
+void di_updatePlayList(int firstIndex, int selectedIndex);
+void di_updateFileList(int firstIndex, int selectedIndex);
+void di_updateBoxing();
+void di_end();
 
 
 #endif
