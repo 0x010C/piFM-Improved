@@ -16,10 +16,8 @@ void di_init()
 
 	/*Mise en place des paires de couleurs*/
 	init_pair(1, COLOR_WHITE, COLOR_CYAN); /*1*/
-	init_pair(2, COLOR_WHITE, COLOR_BLACK); /*2*/
-	init_pair(2, COLOR_GREEN, COLOR_CYAN); /*3*/
-	
-	
+	init_pair(2, COLOR_YELLOW, COLOR_BLACK); /*2*/
+	init_pair(3, COLOR_GREEN, COLOR_CYAN); /*3*/
 }
 
 void di_refresh()
