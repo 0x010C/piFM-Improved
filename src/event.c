@@ -1,13 +1,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <ncurses.h>
+#include <string.h>
 
 #include "main.h"
 
-int eventManager()
+int ev_loop()
 {
-	FileList *filelist = getFileList("/\0");
-	int firstIndex=0, selectedIndex=0, i=0;
+	filelist = getFileList("/\0");
+	int firstIndex=0, selectedIndex=0;
 	int touche = ' ';
 	char *currentPath;
 
@@ -22,22 +23,37 @@ int eventManager()
 				while(selectedIndex > firstIndex+height-2-1)
 					firstIndex++;
 				break;
+				
 			case KEY_UP:
 				selectedIndex -= (selectedIndex > 0);
 				while(selectedIndex < firstIndex)
 					firstIndex--;
 				break;
-			case 10:
-				currentPath = changePath(currentPath, filelist->list[selectedIndex]);
-				if(isDirectory(currentPath))
-				{
-					removeFileList(filelist);
-					filelist = getFileList(currentPath);
-					firstIndex = 0;
-					selectedIndex = 0;
-				}
+				
+			case KEY_STAB:
+				if(param->mode == mo_file)
+					param->mode = mo_play;
 				else
-					currentPath = changePath(currentPath, "..");
+					param->mode = mo_file;
+				firstIndex = 0;
+				selectedIndex = 0;
+				break;
+				
+			case KEY_ENTER:
+				if(param->mode == mo_file)
+				{
+					currentPath = changePath(currentPath, filelist->list[selectedIndex]);
+					if(isDirectory(currentPath))
+					{
+						removeFileList(filelist);
+						filelist = getFileList(currentPath);
+						firstIndex = 0;
+						selectedIndex = 0;
+					}
+					else
+						currentPath = changePath(currentPath, "..");
+				}
+				//else ...
 				break;
 		}
 		updateBoxing();

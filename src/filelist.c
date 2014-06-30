@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include <sys/types.h>
 #include <dirent.h>
@@ -7,28 +8,38 @@
 
 #include "filelist.h"
 
-char *changePath(char *str1, char *str2)
+void fl_changePath(char *newDir)
 {
-	if(strcmp(str2,".") == 0);
+	char *newPath = NULL;
+	
+	if(strcmp(newDir,"./") == 0 || (strcmp(newDir,"../") == 0 && strcmp(filelist->currentPath,"/") == 0));
 
-	else if(strcmp(str2,"..") == 0 && strcmp(str1,"/"))
+	else if(strcmp(newDir,"../") == 0)
 	{
-		str1[strlen(str1)-1] = '\0';
-		int size = strlen(str1)-strlen(strrchr(str1,'/'));
-		str1 = (char*) realloc(str1,sizeof(char)*(size+1));
-		str1[size+1] = '\0';
+		filelist->currentPath[strlen(filelist->currentPath)-1] = '\0';
+		int size = strlen(filelist->currentPath)-strlen(strrchr(filelist->currentPath,'/'));
+		newPath = malloc(sizeof(char)*(size+1));
+		strncpy(newPath,filelist->currentPath,size);
+		newPath[size] = '\0';
+		
+		fl_end();
+		fl_init(newPath);
 	}
 
 	else
 	{
-		str1 = (char*) realloc(str1, sizeof(char)*(strlen(str1)+strlen(str2)+2));
-		strcat(str1,str2);
-		strcat(str1,"/");
+		newPath = (char*) malloc(sizeof(char)*(strlen(filelist->currentPath)+strlen(newDir)+2));
+		strncpy(newPath,filelist->currentPath,strlen(filelist->currentPath));
+		newPath[strlen(filelist->currentPath)] = '\0';
+		strcat(newPath,newDir);
+		
+		fl_end();
+		fl_init(newPath);
 	}
-	return str1;
+	
 }
 
-int isDirectory(char *path)
+Bool isDirectory(char *path)
 {
 	struct stat buf;
 
@@ -36,7 +47,7 @@ int isDirectory(char *path)
 	return S_ISDIR(buf.st_mode);
 }
 
-void orderFileList(FileList *filelist)
+void fl_order()
 {
 	int i = 0;
 	int fin_tri = 0;
@@ -57,51 +68,59 @@ void orderFileList(FileList *filelist)
 	} while(fin_tri == 0);
 }
 
-FileList *getFileList(char *path)
+void fl_init(char *path)
 {
-	FileList *filelist;
-	DIR *descripteur;
+	DIR *rep;
 	struct dirent *fileGetter;
 	int count = 0,i;
 
 	//ouverture du dossier
-	descripteur = opendir(path);
-	if(descripteur == NULL)
+	rep = opendir(path);
+	if(rep == NULL)
 	{
 		endwin();
 		printf("Erreur d'ouverture du dossier '%s'",path);
 		exit(1);
 	}
 
-	while((fileGetter = readdir(descripteur)) != NULL)
+	while((fileGetter = readdir(rep)) != NULL)
 		count++;
 
 	//création de la FileList
 	filelist = (FileList*) malloc(sizeof(FileList));
+	filelist->currentPath = path;
 	filelist->list = (char**) malloc(sizeof(char*)*count);
 	filelist->nbFile = 0;
 
-	rewinddir(descripteur);
+	rewinddir(rep);
 
 	for(i=0;i<count;i++)
 	{
-		if((fileGetter = readdir(descripteur)) != NULL)
+		if((fileGetter = readdir(rep)) != NULL)
 		{
-			filelist->list[i] = (char*) malloc(sizeof(char)*strlen(fileGetter->d_name)+1);
-			strcpy(filelist->list[i],fileGetter->d_name);
-			filelist->list[i][strlen(fileGetter->d_name)] = '\0';
+			if(isDirectory(fileGetter->d_name) == True)
+			{
+				filelist->list[i] = (char*) malloc(sizeof(char)*(strlen(fileGetter->d_name)+2));
+				strcpy(filelist->list[i],fileGetter->d_name);
+				filelist->list[i][strlen(fileGetter->d_name)] = '/';
+				filelist->list[i][strlen(fileGetter->d_name)+1] = '\0';
+			}
+			else
+			{
+				filelist->list[i] = (char*) malloc(sizeof(char)*(strlen(fileGetter->d_name)+1));
+				strcpy(filelist->list[i],fileGetter->d_name);
+				filelist->list[i][strlen(fileGetter->d_name)] = '\0';
+			}
 			filelist->nbFile++;
 		}
 	}
 
 	closedir(descripteur);
 	
-	orderFileList(filelist);
-
-	return filelist;
+	fl_order();
 }
 
-void removeFileList(FileList *filelist)
+void fl_end()
 {
 	while(filelist->nbFile > 0)
 	{
@@ -109,5 +128,6 @@ void removeFileList(FileList *filelist)
 		filelist->nbFile--;
 	}
 	free(filelist->list);
+	free(filelist->currentPath);
 	free(filelist);
 }

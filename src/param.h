@@ -5,10 +5,19 @@
 /*
  * Structures
  */
-typedef struct Params Params;
-struct Params
+typedef enum Mode Mode;
+enum Mode
+{
+	mo_file,
+	mo_play
+};
+
+typedef struct Param Param;
+struct Param
 {
 	float frequence;
+	int playedIndex;
+	Mode mode;
 };
 
 
@@ -21,6 +30,9 @@ struct Params
 /*
  * Functions' header
  */
+void pa_init();
+void pa_parse(int argc, char **argv);
+void pa_end();
 
 
 #endif

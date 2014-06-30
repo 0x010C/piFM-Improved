@@ -32,8 +32,7 @@ enum Bool
  */
 PlayList *playlist;
 FileList *filelist;
-Params *params;
-
+Param *param;
 
 
 #endif

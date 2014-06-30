@@ -5,11 +5,19 @@
 
 int main(int argc, char **argv)
 {
-	startDisplay();
-
-	eventManager();
+	pa_init();
+	pa_parse(argc, argv);
 	
-	stopDisplay();
+	di_init();
+	fl_init();
+	pl_init();
+
+	ev_loop();
+	
+	pl_end();
+	fl_end();
+	di_end();
+	pa_end();
 
 	return 0;
 }
