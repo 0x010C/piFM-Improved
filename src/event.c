@@ -7,13 +7,10 @@
 
 int ev_loop()
 {
-	filelist = getFileList("/\0");
+	fl_init("/");
 	int firstIndex=0, selectedIndex=0;
 	int touche = ' ';
-	char *currentPath;
 
-	currentPath = (char*) malloc(sizeof(char)*2);
-	strcpy(currentPath,"/\0");
 	do
 	{
 		switch(touche)
@@ -42,26 +39,21 @@ int ev_loop()
 			case KEY_ENTER:
 				if(param->mode == mo_file)
 				{
-					currentPath = changePath(currentPath, filelist->list[selectedIndex]);
-					if(isDirectory(currentPath))
+					if(isDirectory(filelist->list[selectedIndex]))
 					{
-						removeFileList(filelist);
-						filelist = getFileList(currentPath);
+						fl_changePath(filelist->list[selectedIndex]);
 						firstIndex = 0;
 						selectedIndex = 0;
 					}
-					else
-						currentPath = changePath(currentPath, "..");
 				}
 				//else ...
 				break;
 		}
-		updateBoxing();
-		updateFilelist(filelist, firstIndex, selectedIndex);
-		refreshDisplay();
+		di_updateBoxing();
+		di_updateFilelist(filelist, firstIndex, selectedIndex);
+		di_refresh();
 	} while((touche=getch()) != 'q');
-		
-	free(currentPath);
-	removeFileList(filelist);
+
+	fl_end();
 	return 0;
 }

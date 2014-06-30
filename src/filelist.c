@@ -39,12 +39,27 @@ void fl_changePath(char *newDir)
 	
 }
 
-Bool isDirectory(char *path)
+Bool isDirectory(char *dir)
 {
 	struct stat buf;
-
-	stat(path,&buf);
-	return S_ISDIR(buf.st_mode);
+	char *path = NULL;
+	
+	path = (char*) malloc(sizeof(char)*(strlen(filelist->currentPath)+strlen(dir)+1));
+	if(path == NULL)
+	{
+		strncpy(path,filelist->currentPath,strlen(filelist->currentPath));
+		path[strlen(filelist->currentPath)] = '\0';
+		strcat(path,dir);
+		stat(path,&buf);
+		free(path);
+		
+		if(S_ISDIR(buf.st_mode) == 0)
+			return False;
+		else
+			return True;
+	}
+	else
+		return False;
 }
 
 void fl_order()
@@ -115,7 +130,7 @@ void fl_init(char *path)
 		}
 	}
 
-	closedir(descripteur);
+	closedir(rep);
 	
 	fl_order();
 }

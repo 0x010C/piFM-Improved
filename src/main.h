@@ -15,6 +15,7 @@ enum Bool
 /*
  * Includes
  */
+#include "param.h"
 #include "filelist.h"
 #include "playlist.h"
 #include "display.h"
