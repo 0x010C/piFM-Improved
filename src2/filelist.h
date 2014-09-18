@@ -23,7 +23,7 @@ struct FileList
  * Functions' header
  */
 void fl_init();
-void fl_changePath(char *newDir);
+void fl_changePath(int index);
 void fl_order();
 void fl_end();
 

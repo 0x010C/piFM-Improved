@@ -59,7 +59,7 @@ void fl_init(char *path)
 		printf("%s\n", filelist->list[i]);
 }
 
-int compare(char *a, char *b)
+int fl_compare(char *a, char *b)
 {
 	/* TODO: Ne pas prendre en compte la casse dans le tri */
 	int i, A, B;
@@ -91,7 +91,7 @@ void fl_order()
 		finTri = True;
 		for(i=0;i<filelist->nbFile-1;i++)
 		{
-			if(compare(filelist->list[i],filelist->list[i+1]) > 0)
+			if(fl_compare(filelist->list[i],filelist->list[i+1]) > 0)
 			{
 				echange = filelist->list[i];
 				filelist->list[i] = filelist->list[i+1];
@@ -102,16 +102,32 @@ void fl_order()
 	} while(finTri == False);
 }
 
-void fl_changePath(char *newDir)
+void fl_changePath(int index)
 {
-	fl_end();
-	/* ... */
-	fl_init(newDir);
+	char *path = NULL;
+	
+	if(index >= 0 && index < filelist->nbFile)
+	{
+		path = (char*) malloc(sizeof(char)*(strlen(filelist->currentPath)+strlen(filelist->list[index])+1));
+		strncpy(path, filelist->currentPath, strlen(filelist->currentPath));
+		strncpy(path+strlen(filelist->currentPath),filelist->list[index],strlen(filelist->list[index]));
+		path[strlen(filelist->currentPath)+strlen(filelist->list[index])] = '\0';
+		
+		fl_end();
+		fl_init(path);
+		
+		free(path);
+	}
 }
 
 void fl_end()
 {
-	
+	int i;
+	for(i=0;i<filelist->nbFile;i++)
+		free(filelist->list[i]);
+	free(filelist->list);
+	free(filelist->currentPath);
+	free(filelist);
 }
 
 Bool isDirectory(char *dir)

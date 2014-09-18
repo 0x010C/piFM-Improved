@@ -27,7 +27,9 @@ void T()
 
 void test()
 {
-	fl_init("/home/kiwi/");
+	fl_init("/home/");
+	fl_changePath(2);
+	fl_end();
 }
 
 int main(int argc, char **argv)
