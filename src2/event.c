@@ -14,10 +14,12 @@ void ev_init()
 {
 	di_init();
 	fl_init("/");
-	
 	di_updateBoxing("Dossier machin/truc/bidule","Playlist");
+	di_updateFilelist(0,0);
 	di_refresh();
 	ev_break();
+	fl_end();
+	di_end();
 }
 
 int ev_loop()

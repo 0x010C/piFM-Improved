@@ -55,8 +55,8 @@ void fl_init(char *path)
 	
 	fl_order();
 	
-	for(i=0;i<filelist->nbFile;i++)
-		printf("%s\n", filelist->list[i]);
+	//for(i=0;i<filelist->nbFile;i++)
+	//	printf("%s\n", filelist->list[i]);
 }
 
 int fl_compare(char *a, char *b)

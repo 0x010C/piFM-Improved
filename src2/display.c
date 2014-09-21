@@ -30,9 +30,14 @@ void di_updatePlaylist(int firstIndex, int selectedIndex, int playedIndex)
 	
 }
 
-void di_updateFilelist(int firstIndex, int selectedIndex)
+void di_updateFilelist(const int firstIndex, const int selectedIndex)
 {
-	
+	int index, line, j;
+	for(line=1,index=firstIndex;line<HEIGHT-1 && index<filelist->nbFile;line++,index++)
+	{
+		for(j=0;j<SIZE_LEFT && j<strlen(filelist->list[index]);j++)
+			mvprintw(line,j+1,"%c",filelist->list[index][j]);
+	}
 }
 
 void di_updateBoxing(char *title1, char *title2)

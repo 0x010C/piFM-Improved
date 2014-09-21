@@ -34,6 +34,7 @@ void test()
 
 int main(int argc, char **argv)
 {
-	test();
+	ev_init();
+	//test();
 	return 0;
 }
