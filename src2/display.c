@@ -57,7 +57,7 @@ void di_updateBoxing(char *title1, char *title2)
 	for(i=1;i<(SIZE_LEFT-strlen(title1))/2-1 && strlen(title1)+4 < SIZE_LEFT;i++)
 		mvprintw(0,i,"-");
 	mvprintw(0,i++,"|");
-	for(j=0;i<SIZE_LEFT-2 && j<strlen(title1);j++,i++)
+	for(j=0;i<SIZE_LEFT-2 && j<strlen(title1);j++,i++) //TODO: Titre pas centré :'(
 		mvprintw(0,i,"%c",title1[j]);
 	mvprintw(0,i++,"|");
 	for(;i<SIZE_LEFT-1;i++)

@@ -41,8 +41,11 @@ int ev_loop()
 				break;
 			
 			case 10:
-				fl_changePath(index);
-				index = 0;
+				if(fl_changePath(index))
+				{
+					index = 0;
+					firstIndex = 0;
+				}
 				break;
 		}
 		di_updateBoxing(filelist->currentPath,"Playlist");

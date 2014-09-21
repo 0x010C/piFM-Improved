@@ -8,6 +8,8 @@
 
 #include "filelist.h"
 
+// TODO: Minification des adresses
+
 void fl_init(char *path)
 {
 	DIR *rep;
@@ -102,22 +104,27 @@ void fl_order()
 	} while(finTri == False);
 }
 
-void fl_changePath(int index)
+Bool fl_changePath(int index)
 {
 	char *path = NULL;
 	
 	if(index >= 0 && index < filelist->nbFile)
 	{
-		path = (char*) malloc(sizeof(char)*(strlen(filelist->currentPath)+strlen(filelist->list[index])+1));
-		strncpy(path, filelist->currentPath, strlen(filelist->currentPath));
-		strncpy(path+strlen(filelist->currentPath),filelist->list[index],strlen(filelist->list[index]));
-		path[strlen(filelist->currentPath)+strlen(filelist->list[index])] = '\0';
+		if(filelist->list[index][strlen(filelist->list[index]+1)] == '/')
+		{
+			path = (char*) malloc(sizeof(char)*(strlen(filelist->currentPath)+strlen(filelist->list[index])+1));
+			strncpy(path, filelist->currentPath, strlen(filelist->currentPath));
+			strncpy(path+strlen(filelist->currentPath),filelist->list[index],strlen(filelist->list[index]));
+			path[strlen(filelist->currentPath)+strlen(filelist->list[index])] = '\0';
 		
-		fl_end();
-		fl_init(path);
+			fl_end();
+			fl_init(path);
 		
-		free(path);
+			free(path);
+			return True;
+		}
 	}
+	return False;
 }
 
 void fl_end()
