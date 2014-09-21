@@ -35,8 +35,12 @@ void di_updateFilelist(const int firstIndex, const int selectedIndex)
 	int index, line, j;
 	for(line=1,index=firstIndex;line<HEIGHT-1 && index<filelist->nbFile;line++,index++)
 	{
+		if(index == selectedIndex)
+			attron(COLOR_PAIR(2));
 		for(j=0;j<SIZE_LEFT && j<strlen(filelist->list[index]);j++)
 			mvprintw(line,j+1,"%c",filelist->list[index][j]);
+		if(index == selectedIndex)
+			attroff(COLOR_PAIR(2));
 	}
 }
 
