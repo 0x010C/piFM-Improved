@@ -37,11 +37,16 @@ void di_updateFilelist(const int firstIndex, const int selectedIndex)
 	{
 		if(index == selectedIndex)
 			attron(COLOR_PAIR(2));
-		for(j=0;j<SIZE_LEFT && j<strlen(filelist->list[index]);j++)
+		for(j=0;j<SIZE_LEFT-2 && j<strlen(filelist->list[index]);j++)
 			mvprintw(line,j+1,"%c",filelist->list[index][j]);
+		for(;j<SIZE_LEFT-2;j++)
+			mvprintw(line,j+1," ");
 		if(index == selectedIndex)
 			attroff(COLOR_PAIR(2));
 	}
+	for(;line<HEIGHT-1;line++)
+		for(j=0;j<SIZE_LEFT-2;j++)
+			mvprintw(line,j+1," ");
 }
 
 void di_updateBoxing(char *title1, char *title2)
