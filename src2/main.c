@@ -39,6 +39,15 @@ void test()
 
 int main(int argc, char **argv)
 {
+	/* Initialisation des variables globales */
+	playlist = NULL;
+	filelist = NULL;
+	param = NULL;
+	
+	/* Parsage des arguments */
+	pa_parse(argc, argv);
+	
+	/* Début de la boucle de gestion des évènements */
 	ev_loop();
 	//test();
 	return 0;

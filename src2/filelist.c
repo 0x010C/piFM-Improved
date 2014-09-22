@@ -109,7 +109,7 @@ Bool fl_changePath(int index)
 	int i;
 	
 	/* On verifie qu'il n'y ai pas d'erreur d'index */
-	if(index >= 0 && index < filelist->nbFile)
+	if(index >= 0 && index < filelist->nbFile) //TODO: Vérifier également les doits sur le dossier
 	{
 		/* Dans le cas du dossier "./", on ne fait rien */
 		if(index == 0)
