@@ -8,8 +8,6 @@
 
 #include "filelist.h"
 
-// TODO: Minification des adresses
-
 void fl_init(char *path)
 {
 	DIR *rep;
@@ -58,7 +56,7 @@ void fl_init(char *path)
 	fl_order();
 	
 	//for(i=0;i<filelist->nbFile;i++)
-	//	printf("%s\n", filelist->list[i]);
+		//printf("%s\n", filelist->list[i]);
 }
 
 int fl_compare(char *a, char *b)
@@ -107,19 +105,49 @@ void fl_order()
 Bool fl_changePath(int index)
 {
 	char *path = NULL;
-	
+	DIR *rep;
+	int i;
 	if(index >= 0 && index < filelist->nbFile)
 	{
-		if(filelist->list[index][strlen(filelist->list[index]+1)] == '/')
+		if(index == 0)
+			return False;
+		else if(index == 1)
+		{
+			if(strcmp(filelist->currentPath,"/") != 0)
+			{
+				fprintf(stderr,"%s#",filelist->currentPath);
+				i=strlen(filelist->currentPath)-2;
+				fprintf(stderr,"%d#",i);
+				while(filelist->currentPath[i] != '/')
+					i--;
+				fprintf(stderr,"%d#",i);
+				path = malloc(sizeof(char)*(i+2));
+				strncpy(path, filelist->currentPath,i+1);
+				fprintf(stderr,"%s#",path);
+				path[i+1] = '\0';
+				fprintf(stderr,"%s#",path);
+
+				fl_end();
+				fl_init(path);
+
+				free(path);
+				fprintf(stderr,"\n");
+				
+				return True;
+			}
+			else
+				return False;
+		}
+		else if(filelist->list[index][strlen(filelist->list[index]+1)] == '/')
 		{
 			path = (char*) malloc(sizeof(char)*(strlen(filelist->currentPath)+strlen(filelist->list[index])+1));
 			strncpy(path, filelist->currentPath, strlen(filelist->currentPath));
 			strncpy(path+strlen(filelist->currentPath),filelist->list[index],strlen(filelist->list[index]));
 			path[strlen(filelist->currentPath)+strlen(filelist->list[index])] = '\0';
-		
+
 			fl_end();
 			fl_init(path);
-		
+
 			free(path);
 			return True;
 		}

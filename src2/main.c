@@ -27,8 +27,13 @@ void T()
 
 void test()
 {
-	fl_init("/home/");
+	fl_init("/");
+	fl_changePath(8);
 	fl_changePath(2);
+	printf("v\n");
+	ev_break();
+	fl_changePath(1);
+	
 	fl_end();
 }
 
