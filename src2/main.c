@@ -27,12 +27,19 @@ void T()
 
 void test()
 {
+	int i;
 	pl_init();
+	pl_add("/home/kiwi/Musique/","1.ogg");
+	pl_add("/home/kiwi/Musique/","2.mp3");
+	pl_add("/media/dd/Téléchargement/disque cool/","3.wmv");
+	for(i=0;i<playlist->nbFile;i++)
+		printf("%s\n%s\n\n", playlist->displayList[i], playlist->pathList[i]);
 	pl_end();
 }
 
 int main(int argc, char **argv)
 {
+#ifndef __TEST__
 	/* Initialisation des variables globales */
 	playlist = NULL;
 	filelist = NULL;
@@ -43,7 +50,8 @@ int main(int argc, char **argv)
 	
 	/* Début de la boucle de gestion des évènements */
 	ev_loop();
-	
-	//test();
+#else
+	test();
+#endif
 	return 0;
 }

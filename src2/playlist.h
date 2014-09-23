@@ -23,7 +23,7 @@ struct PlayList
  * Functions' header
  */
 void pl_init();
-void pl_add(char *filePath);
+void pl_add(char *path, char *file);
 void pl_addAll(char *filePath);
 void pl_remove(int index);
 void pl_removeAll();
