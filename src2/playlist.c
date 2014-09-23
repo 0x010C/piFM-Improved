@@ -9,7 +9,8 @@ void pl_init()
 	{
 		playlist = (PlayList*) malloc(sizeof(PlayList));
 		playlist->nbFile = 0;
-		playlist->list = NULL;
+		playlist->displayList = NULL;
+		playlist->pathList = NULL;
 	}
 }
 
@@ -44,11 +45,15 @@ void pl_end()
 
 	if(playlist != NULL)
 	{
-		if(playlist->list != NULL)
+		if(playlist->displayList != NULL)
 		{
 			for(i=0;i<playlist->nbFile;i++)
-				free(playlist->list[i]);
-			free(playlist->list);
+			{
+				free(playlist->displayList[i]);
+				free(playlist->pathList[i]);
+			}
+			free(playlist->displayList);
+			free(playlist->pathList);
 		}
 		free(playlist);
 		playlist = NULL;

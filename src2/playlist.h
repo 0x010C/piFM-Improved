@@ -9,7 +9,8 @@ typedef struct PlayList PlayList;
 struct PlayList
 {
 	int nbFile;
-	char **list;
+	char **displayList;
+	char **pathList;
 };
 
 /*
