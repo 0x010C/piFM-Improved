@@ -27,12 +27,19 @@ void di_refresh()
 
 void di_updatePlaylist(int firstIndex, int selectedIndex, int playedIndex)
 {
-	
+	int i, j;
+	attron(COLOR_PAIR(1));	
+	for(j=1;j<HEIGHT-1;j++)
+		for(i=SIZE_RIGHT+1;i<SIZE_RIGHT+SIZE_LEFT-1;i++)
+			mvprintw(j,i," ");
+	attroff(COLOR_PAIR(1));
 }
 
 void di_updateFilelist(const int firstIndex, const int selectedIndex)
 {
 	int index, line, j;
+	
+	attron(COLOR_PAIR(1));
 	for(line=1,index=firstIndex;line<HEIGHT-1 && index<filelist->nbFile;line++,index++)
 	{
 		if(index == selectedIndex)
@@ -42,17 +49,20 @@ void di_updateFilelist(const int firstIndex, const int selectedIndex)
 		for(;j<SIZE_LEFT-2;j++)
 			mvprintw(line,j+1," ");
 		if(index == selectedIndex)
-			attroff(COLOR_PAIR(2));
+			attron(COLOR_PAIR(1));
 	}
 	for(;line<HEIGHT-1;line++)
 		for(j=0;j<SIZE_LEFT-2;j++)
 			mvprintw(line,j+1," ");
+	attroff(COLOR_PAIR(1));
 }
 
 void di_updateBoxing(char *title1, char *title2)
 {
 	/* Draw the top-line */
 	int i,j;
+	
+	attron(COLOR_PAIR(1));
 	mvprintw(0,0,"+");
 	for(i=1;i<(SIZE_LEFT-strlen(title1))/2-1 && strlen(title1)+4 < SIZE_LEFT;i++)
 		mvprintw(0,i,"-");
@@ -95,6 +105,8 @@ void di_updateBoxing(char *title1, char *title2)
 	for(i=SIZE_LEFT+1;i<SIZE_LEFT+SIZE_RIGHT-1;i++)
 		mvprintw(HEIGHT-1,i,"-");
 	mvprintw(HEIGHT-1,SIZE_LEFT+SIZE_RIGHT-1,"+");
+
+	attroff(COLOR_PAIR(1));
 }
 
 void di_end()

@@ -24,7 +24,7 @@ void pa_parse(int argc, char **argv)
 	/* On analyse chaque arguments un par un */
 	for(i=0;i<argc;i++)
 	{
-		/* Si le paramètre est "-f", et qu'il est bien suivi d'un autre paramètre (la valeur de la fréquence) */
+		/* Si le paramètre est "-f" */
 		if(strcmp(argv[i],"-f") == 0 && i+1<argc)
 		{
 			i++;
