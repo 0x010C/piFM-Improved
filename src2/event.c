@@ -27,7 +27,8 @@ void ev_init()
 int ev_loop()
 {
 	int touche = ' ';
-	int index = 0, firstIndex = 0;
+	int fl_index = 0, fl_firstIndex = 0;
+	int pl_index = 0, pl_firstIndex = 0, pl_playedIndex = -1;
 	char *title = NULL;
 
 	ev_init();
@@ -38,34 +39,72 @@ int ev_loop()
 			case mo_file:
 				switch(touche)
 				{
-					case KEY_DOWN:
-						index += (index < filelist->nbFile-1);
-						firstIndex += (index+firstIndex > HEIGHT-3 && firstIndex+HEIGHT-2 < filelist->nbFile);
+					case KEY_DOWN: /* Flèche bas */
+						fl_index += (fl_index < filelist->nbFile-1);
+						fl_firstIndex += (fl_index+fl_firstIndex > HEIGHT-3 && fl_firstIndex+HEIGHT-2 < filelist->nbFile);
 						break;
-			
-					case KEY_UP:
-						index -= (index > 0);
-						firstIndex -= (index < firstIndex);
+
+					case KEY_UP: /* Flèche haut */
+						fl_index -= (fl_index > 0);
+						fl_firstIndex -= (fl_index < fl_firstIndex);
 						break;
-			
-					case 10:
-						if(fl_changePath(index))
+
+					case '\n': /* Entrer */
+						if(fl_changePath(fl_index))
 						{
-							index = 0;
-							firstIndex = 0;
+							fl_index = 0;
+							fl_firstIndex = 0;
 						}
 						break;
+
+					case KEY_BACKSPACE: /* Retour arrière */
+						if(fl_changePath(1))
+						{
+							fl_index = 0;
+							fl_firstIndex = 0;
+						}
+						break;
+
+					case '\t': /* Tab */
+						param->mode = mo_play;
+						break;
+
+					case 'a': /* a */
+						if(isMusic(filelist->list[fl_index]))
+							pl_add(filelist->currentPath, filelist->list[fl_index]);
+						break;
 				}
-				di_updateBoxing(filelist->currentPath,"Playlist");
-				di_updatePlaylist(0, 0, -1);
-				di_updateFilelist(firstIndex,index);
-				di_refresh();
 				break;
 			
 			case mo_play:
-				
+				switch(touche)
+				{
+					case KEY_DOWN: /* Flèche bas */
+						pl_index += (pl_index < playlist->nbFile-1);
+						pl_firstIndex += (pl_index+pl_firstIndex > HEIGHT-3 && pl_firstIndex+HEIGHT-2 < playlist->nbFile);
+						break;
+
+					case KEY_UP: /* Flèche haut */
+						pl_index -= (pl_index > 0);
+						pl_firstIndex -= (pl_index < pl_firstIndex);
+						break;
+
+					case '\n': /* Entrer */
+						pl_playedIndex = pl_index;
+						/* Lire le fichier */
+						break;
+
+					case '\t': /* Tab */
+						param->mode = mo_file;
+						break;
+				}
 				break;
 		}
+
+		di_updateBoxing(filelist->currentPath, "Playlist");
+		di_updateFilelist(fl_firstIndex, fl_index);
+		di_updatePlaylist(pl_firstIndex, pl_index, pl_playedIndex);
+		di_refresh();
 	}
 	ev_end();
 	

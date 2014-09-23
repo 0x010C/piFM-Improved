@@ -17,6 +17,13 @@ void pl_init()
 
 void pl_add(char *path, char *file)
 {
+	int i;
+
+	/* Vérification que l'entrée à ajouter n'est pas déjà présente */
+	for(i=0;i<playlist->nbFile;i++)
+		if(strncmp(playlist->pathList[i], path, strlen(path)) == 0 && strcmp(playlist->displayList[i], file) == 0)
+			return;
+
 	/* Allocation des cases de tableau supplémentaire */
 	if(playlist->displayList == NULL)
 	{

@@ -203,3 +203,10 @@ Bool isDirectory(char *dir)
 	else
 		return True;
 }
+
+Bool isMusic(char *file)
+{
+	/* TODO: vérifier le type du fichier */
+	/* Teste si c'est un fichier */
+	return !isDirectory(file);
+}

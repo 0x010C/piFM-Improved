@@ -27,8 +27,8 @@ Bool fl_changePath(int index);
 void fl_order();
 void fl_end();
 
-Bool isDirectory(char *path);
-Bool isMusic(char *path);
+Bool isDirectory(char *dir);
+Bool isMusic(char *file);
 
 
 #endif
