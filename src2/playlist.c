@@ -5,7 +5,12 @@
 
 void pl_init()
 {
-
+	if(playlist == NULL)
+	{
+		playlist = (PlayList*) malloc(sizeof(PlayList));
+		playlist->nbFile = 0;
+		playlist->list = NULL;
+	}
 }
 
 void pl_add(char *filePath)
@@ -35,6 +40,18 @@ int pl_count()
 
 void pl_end()
 {
+	int i;
 
+	if(playlist != NULL)
+	{
+		if(playlist->list != NULL)
+		{
+			for(i=0;i<playlist->nbFile;i++)
+				free(playlist->list[i]);
+			free(playlist->list);
+		}
+		free(playlist);
+		playlist = NULL;
+	}
 }
 

@@ -14,6 +14,10 @@ void fl_init(char *path)
 	struct dirent *fileGetter;
 	int count = 0, i = 0;
 
+	/* Vérification pour éviter toute création de doublon */
+	if(filelist != NULL)
+		return;
+
 	/* Ouverture du dossier */
 	rep = opendir(path);
 	if(rep == NULL)
@@ -163,12 +167,17 @@ Bool fl_changePath(int index)
 void fl_end()
 {
 	int i;
-	/* On libère toute la mémoire alloué pour la structure FileList */
-	for(i=0;i<filelist->nbFile;i++)
-		free(filelist->list[i]);
-	free(filelist->list);
-	free(filelist->currentPath);
-	free(filelist);
+
+	if(filelist != NULL)
+	{
+		/* On libère toute la mémoire alloué pour la structure FileList */
+		for(i=0;i<filelist->nbFile;i++)
+			free(filelist->list[i]);
+		free(filelist->list);
+		free(filelist->currentPath);
+		free(filelist);
+		filelist = NULL;
+	}
 }
 
 Bool isDirectory(char *dir)

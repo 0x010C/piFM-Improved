@@ -12,8 +12,12 @@ void ev_break()
 
 void ev_init()
 {
+	/* Initialisation des différents modules */
 	di_init();
 	fl_init("/");
+	pl_init();
+
+	/* Génération de l'affichage de départ */
 	di_updateBoxing("/","Playlist");
 	di_updatePlaylist(0, 0, 0);
 	di_updateFilelist(0,0);
@@ -70,6 +74,8 @@ int ev_loop()
 
 void ev_end()
 {
-	fl_end();
 	di_end();
+	fl_end();
+	pl_end();
+	pa_end();
 }

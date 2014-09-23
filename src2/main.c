@@ -27,14 +27,8 @@ void T()
 
 void test()
 {
-	fl_init("/");
-	fl_changePath(8);
-	fl_changePath(2);
-	printf("v\n");
-	ev_break();
-	fl_changePath(1);
-	
-	fl_end();
+	pl_init();
+	pl_end();
 }
 
 int main(int argc, char **argv)
@@ -50,7 +44,6 @@ int main(int argc, char **argv)
 	/* Début de la boucle de gestion des évènements */
 	ev_loop();
 	
-	pa_end();
 	//test();
 	return 0;
 }

@@ -6,10 +6,13 @@
 
 void pa_init()
 {
-	param = (Param*) malloc(sizeof(Param));
-	param->frequence = 1000;
-	param->playedIndex = -1;
-	param->mode = mo_file;
+	if(param == NULL)
+	{
+		param = (Param*) malloc(sizeof(Param));
+		param->frequence = 1000;
+		param->playedIndex = -1;
+		param->mode = mo_file;
+	}
 }
 
 void pa_parse(int argc, char **argv)
@@ -37,6 +40,10 @@ void pa_parse(int argc, char **argv)
 
 void pa_end()
 {
-	free(param);
+	if(param != NULL)
+	{
+		free(param);
+		param = NULL;
+	}
 }
 
