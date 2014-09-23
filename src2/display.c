@@ -45,7 +45,7 @@ void di_updatePlaylist(int firstIndex, int selectedIndex, int playedIndex)
 		for(;j<SIZE_RIGHT-2;j++)
 			mvprintw(line,j+SIZE_LEFT+1," ");
 
-		if(index == selectedIndex || index == firstIndex)
+		if(index == selectedIndex || index == playedIndex)
 			attron(COLOR_PAIR(1));
 	}
 	for(;line<HEIGHT-1;line++)

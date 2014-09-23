@@ -24,10 +24,9 @@ struct PlayList
  */
 void pl_init();
 void pl_add(char *path, char *file);
-void pl_addAll(char *filePath);
+void pl_addAll();
 void pl_remove(int index);
 void pl_removeAll();
-int pl_count();
 void pl_end();
 
 

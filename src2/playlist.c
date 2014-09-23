@@ -51,9 +51,17 @@ void pl_add(char *path, char *file)
 	playlist->nbFile++;
 }
 
-void pl_addAll(char *filePath)
+void pl_addAll(int index)
 {
-
+	int i;
+	
+	if(fl_changePath(index))
+	{
+		for(i=2;i<filelist->nbFile;i++) /* On commence à deux, rien ne sert de tester à chaque fois  ./ et ../  */
+			if(isMusic(filelist->list[i]))
+				pl_add(filelist->currentPath, filelist->list[i]);
+		fl_changePath(1);
+	}
 }
 
 void pl_remove(int index)

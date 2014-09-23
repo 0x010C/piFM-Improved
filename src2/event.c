@@ -73,6 +73,10 @@ int ev_loop()
 						if(isMusic(filelist->list[fl_index]))
 							pl_add(filelist->currentPath, filelist->list[fl_index]);
 						break;
+
+					case 'A': /* A */
+						pl_addAll(fl_index);
+						break;
 				}
 				break;
 			
