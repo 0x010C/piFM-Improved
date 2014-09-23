@@ -27,7 +27,7 @@ void fl_init(char *path)
 		count++;
 
 	/* Allocation et initialisation de la FileList */
-	filelist = (FileList*) malloc(sizeof(FileList)*count);
+	filelist = (FileList*) malloc(sizeof(FileList));
 	filelist->currentPath = (char*) malloc(sizeof(char)*(strlen(path)+1));
 	filelist->list = (char**) malloc(sizeof(char*)*count);
 	filelist->nbFile = count;

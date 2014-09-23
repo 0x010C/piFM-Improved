@@ -15,7 +15,7 @@ enum Mode
 typedef struct Param Param;
 struct Param
 {
-	float frequence;
+	int frequence;
 	int playedIndex;
 	Mode mode;
 };

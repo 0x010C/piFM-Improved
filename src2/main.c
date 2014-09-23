@@ -16,7 +16,7 @@ void T()
 	for(i=0;i<filelist->nbFile;i++)
 		fprintf(file,"filelist->list[%d] : %s#\n",i,filelist->list[i]);
 
-	fprintf(file,"\nparam->frequence : %f#\n", param->frequence);
+	fprintf(file,"\nparam->frequence : %d#\n", param->frequence);
 	fprintf(file,"param->playedIndex : %d#\n", param->playedIndex);
 	fprintf(file,"param->mode : %d#\n\n", param->mode);
 
@@ -49,6 +49,8 @@ int main(int argc, char **argv)
 	
 	/* Début de la boucle de gestion des évènements */
 	ev_loop();
+	
+	pa_end();
 	//test();
 	return 0;
 }
