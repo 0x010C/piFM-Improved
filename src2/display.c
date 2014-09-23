@@ -15,9 +15,10 @@ void di_init()
 	start_color();
 
 	/*Mise en place des paires de couleurs*/
-	init_pair(1, COLOR_WHITE, COLOR_BLUE); /*1*/
-	init_pair(2, COLOR_YELLOW, COLOR_BLACK); /*2*/
-	init_pair(3, COLOR_GREEN, COLOR_BLUE); /*3*/
+	init_pair(1, COLOR_WHITE, COLOR_BLUE); /* Fond */
+	init_pair(2, COLOR_YELLOW, COLOR_BLACK); /* Sélectionné */
+	init_pair(3, COLOR_GREEN, COLOR_BLUE); /* Joué */
+	init_pair(4, COLOR_GREEN, COLOR_BLACK); /* Sélectionné et joué */
 }
 
 void di_refresh()
@@ -27,11 +28,29 @@ void di_refresh()
 
 void di_updatePlaylist(int firstIndex, int selectedIndex, int playedIndex)
 {
-	int i, j;
-	attron(COLOR_PAIR(1));	
-	for(j=1;j<HEIGHT-1;j++)
-		for(i=SIZE_RIGHT+1;i<SIZE_RIGHT+SIZE_LEFT-1;i++)
-			mvprintw(j,i," ");
+	int index, line, j;
+	
+	attron(COLOR_PAIR(1));
+	for(line=1,index=firstIndex;line<HEIGHT-1 && index<playlist->nbFile;line++,index++)
+	{
+		if(index == selectedIndex && index == playedIndex)
+			attron(COLOR_PAIR(4));
+		else if(index == selectedIndex)
+			attron(COLOR_PAIR(2));
+		else if(index == playedIndex)
+			attron(COLOR_PAIR(3));
+
+		for(j=0;j<SIZE_RIGHT-2 && j<strlen(playlist->displayList[index]);j++)
+			mvprintw(line,j+SIZE_LEFT+1,"%c",playlist->displayList[index][j]);
+		for(;j<SIZE_RIGHT-2;j++)
+			mvprintw(line,j+SIZE_LEFT+1," ");
+
+		if(index == selectedIndex || index == firstIndex)
+			attron(COLOR_PAIR(1));
+	}
+	for(;line<HEIGHT-1;line++)
+		for(j=0;j<SIZE_RIGHT-2;j++)
+			mvprintw(line,j+SIZE_LEFT+1," ");
 	attroff(COLOR_PAIR(1));
 }
 
@@ -44,10 +63,12 @@ void di_updateFilelist(const int firstIndex, const int selectedIndex)
 	{
 		if(index == selectedIndex)
 			attron(COLOR_PAIR(2));
+
 		for(j=0;j<SIZE_LEFT-2 && j<strlen(filelist->list[index]);j++)
 			mvprintw(line,j+1,"%c",filelist->list[index][j]);
 		for(;j<SIZE_LEFT-2;j++)
 			mvprintw(line,j+1," ");
+
 		if(index == selectedIndex)
 			attron(COLOR_PAIR(1));
 	}

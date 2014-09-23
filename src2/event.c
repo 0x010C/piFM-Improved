@@ -19,7 +19,7 @@ void ev_init()
 
 	/* Génération de l'affichage de départ */
 	di_updateBoxing("/","Playlist");
-	di_updatePlaylist(0, 0, 0);
+	di_updatePlaylist(0, 0, -1);
 	di_updateFilelist(0,0);
 	di_refresh();
 }
@@ -57,7 +57,7 @@ int ev_loop()
 						break;
 				}
 				di_updateBoxing(filelist->currentPath,"Playlist");
-				di_updatePlaylist(0, 0, 0);
+				di_updatePlaylist(0, 0, -1);
 				di_updateFilelist(firstIndex,index);
 				di_refresh();
 				break;
