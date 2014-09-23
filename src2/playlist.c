@@ -64,19 +64,43 @@ void pl_addAll(int index)
 	}
 }
 
-void pl_remove(int index)
+void pl_remove(int index) /* TODO: Debug, ca supprime par packets au lieu de juste un */
 {
-
+	int i;
+	
+	if(index >= 0 && index < playlist->nbFile)
+	{
+		free(playlist->displayList[index]);
+		free(playlist->pathList[index]);
+		for(i=index;i<playlist->nbFile-1;i++)
+		{
+			playlist->displayList[i] = playlist->displayList[i+1];
+			playlist->pathList[i] = playlist->pathList[i+1];
+		}
+		playlist->nbFile--;
+		playlist->displayList = (char**) realloc(playlist->displayList, sizeof(char*)*playlist->nbFile--);
+		playlist->pathList = (char**) realloc(playlist->pathList, sizeof(char*)*playlist->nbFile--);
+	}
 }
 
 void pl_removeAll()
 {
+	int i;
 
-}
-
-int pl_count()
-{
-
+	if(playlist->displayList != NULL)
+	{
+		for(i=0;i<playlist->nbFile;i++)
+		{
+			free(playlist->displayList[i]);
+			free(playlist->pathList[i]);
+		}
+		playlist->nbFile = 0;
+		free(playlist->displayList);
+		free(playlist->pathList);
+		playlist->displayList = NULL;
+		playlist->pathList = NULL;
+	}
+	
 }
 
 void pl_end()

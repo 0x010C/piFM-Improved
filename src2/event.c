@@ -101,6 +101,17 @@ int ev_loop()
 					case '\t': /* Tab */
 						param->mode = mo_file;
 						break;
+
+					case 'c': /* c */
+						pl_remove(pl_index);
+						break;
+
+					case 'C': /* C */
+						pl_removeAll();
+						pl_index = 0;
+						pl_firstIndex = 0;
+						pl_playedIndex = -1;
+						break;
 				}
 				break;
 		}
