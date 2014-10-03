@@ -39,6 +39,7 @@ int main(int argc, char **argv)
 	playlist = NULL;
 	filelist = NULL;
 	param = NULL;
+	tasktowait = NULL;
 	
 	/* Parsage des arguments */
 	pa_parse(argc, argv);
@@ -50,3 +51,8 @@ int main(int argc, char **argv)
 #endif
 	return 0;
 }
+
+/*
+TODO:
+
+*/

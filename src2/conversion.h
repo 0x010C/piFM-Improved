@@ -5,12 +5,13 @@
 /*
  * Structures
  */
-typedef struct taskToWait;
-struct 
+typedef struct TaskToWait TaskToWait;
+struct TaskToWait
 {
-	int nbFile;
-	char **displayList;
-	char **pathList;
+	int id;
+	char *realPath;
+	char *tempPath;
+	TaskToWait *next;
 };
 
 
@@ -23,8 +24,10 @@ struct
 /*
  * Functions' header
  */
-void co_init(char *);
+void co_start(int id, char *realPath);
 void co_check();
+void co_remove();
+void co_stop();
 
 
 #endif

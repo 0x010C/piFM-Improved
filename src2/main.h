@@ -36,6 +36,7 @@ enum Bool
 PlayList *playlist;
 FileList *filelist;
 Param *param;
+TaskToWait *tasktowait;
 
 
 #endif
