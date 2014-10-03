@@ -5,6 +5,13 @@
 /*
  * Structures
  */
+typedef struct taskToWait;
+struct 
+{
+	int nbFile;
+	char **displayList;
+	char **pathList;
+};
 
 
 /*
@@ -16,7 +23,8 @@
 /*
  * Functions' header
  */
-
+void co_init(char *);
+void co_check();
 
 
 #endif
