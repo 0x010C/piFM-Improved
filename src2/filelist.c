@@ -206,6 +206,7 @@ Bool isDirectory(char *dir)
 
 Bool isMusic(char *file)
 {
+	/* TODO: Vérifier les droits */
 	int i;
 	char *path = NULL;
 	FILE *test = NULL;
@@ -215,7 +216,7 @@ Bool isMusic(char *file)
 	strncpy(path, filelist->currentPath, strlen(filelist->currentPath));
 	strncpy(path+strlen(filelist->currentPath),file, strlen(file));
 	path[strlen(filelist->currentPath)+strlen(file)] = '\0';
-	printf("#%s#",path);
+
 	test = fopen(path,"r");
 	free(path);
 	if(test == NULL)
@@ -230,10 +231,12 @@ Bool isMusic(char *file)
 	i=strlen(file)-1;
 	while(file[i] != '.' && i > 0)
 		i--;
-	printf("#%s#",file+i);
 	/* Test de l'extension */
 	if(strcmp(file+i,".mp3") == 0 || strcmp(file+i,".JPG") == 0)
 		return True;
+#ifdef __ALLFILES__
+	return True;
+#endif
 	return False;
 	
 }

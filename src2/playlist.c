@@ -64,7 +64,7 @@ void pl_addAll(int index)
 	}
 }
 
-void pl_remove(int index) /* TODO: Debug, ca supprime par packets au lieu de juste un */
+void pl_remove(int index)
 {
 	int i;
 	
@@ -78,8 +78,8 @@ void pl_remove(int index) /* TODO: Debug, ca supprime par packets au lieu de jus
 			playlist->pathList[i] = playlist->pathList[i+1];
 		}
 		playlist->nbFile--;
-		playlist->displayList = (char**) realloc(playlist->displayList, sizeof(char*)*playlist->nbFile--);
-		playlist->pathList = (char**) realloc(playlist->pathList, sizeof(char*)*playlist->nbFile--);
+		playlist->displayList = (char**) realloc(playlist->displayList, sizeof(char*)*playlist->nbFile);
+		playlist->pathList = (char**) realloc(playlist->pathList, sizeof(char*)*playlist->nbFile);
 	}
 }
 
