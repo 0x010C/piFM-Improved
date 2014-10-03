@@ -27,7 +27,9 @@ void T()
 
 void test()
 {
-
+	fl_init("/home/kiwi/");
+	printf("%d\n",isMusic("DSC05558.mp3"));
+	fl_end();
 }
 
 int main(int argc, char **argv)
