@@ -19,6 +19,7 @@ enum Bool
 #include "filelist.h"
 #include "playlist.h"
 #include "display.h"
+#include "conversion.h"
 #include "event.h"
 #include <ncurses.h>
 
