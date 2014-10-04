@@ -9,6 +9,7 @@ typedef struct TaskToWait TaskToWait;
 struct TaskToWait
 {
 	int id;
+	int pid;
 	char *realPath;
 	char *tempPath;
 	TaskToWait *next;
