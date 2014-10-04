@@ -8,6 +8,7 @@ void co_start(int id, char *realPath)
 {
 	int i;
 	TaskToWait *newTask = NULL;
+	TaskToWait *temp = NULL;
 	
 	/* Allocation de la structure */
 	newTask = (TaskToWait*) malloc(sizeof(TaskToWait));
@@ -35,5 +36,15 @@ void co_start(int id, char *realPath)
 	}while((id/=10) != 0);
 
 	/* Ajout à la fin de la liste */
+	if(tasktowait == NULL)
+		tasktowait = newTask;
+	else
+	{
+		temp = tasktowait;
+		while(temp->next != NULL)
+			temp = temp->next;
+		temp->next = newTask;
+	}
 	
+	/* TODO: fork */
 }
