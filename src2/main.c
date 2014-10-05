@@ -27,7 +27,10 @@ void T()
 
 void test()
 {
-	co_start(721, "/home/kiwi/booba.mp3");
+	ev_init();
+	co_start(721, "/home/kiwi/Bureau/01-GypsyCab.mp3");
+	wait(NULL);
+	ev_end();
 }
 
 int main(int argc, char **argv)

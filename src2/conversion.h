@@ -28,7 +28,7 @@ struct TaskToWait
 void co_start(int id, char *realPath);
 void co_check();
 void co_remove();
-void co_stop();
+void co_end();
 
 
 #endif

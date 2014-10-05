@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
 
 #include "conversion.h"
 
@@ -24,18 +25,18 @@ void co_start(int id, char *realPath)
 	
 	/* Allocation et remplissage du chemin vers le fichier converti */
 	for(i=1;(id/=10) != 0;i++);
-	newTask->tempPath = (char*) malloc(sizeof(char)*(5+i+5)); // /tmp/789.mov\0 : 5 + 3 + 5 chars
-	strncpy(newTask->tempPath,"/tmp/",5);
-	strncpy(newTask->tempPath+i+5,".mov",4);
-	newTask->tempPath[i+9] = '\0';
+	newTask->tempPath = (char*) malloc(sizeof(char)*(10+i+5)); // /tmp/pifm-789.mov\0 : 5 + 3 + 5 chars
+	strncpy(newTask->tempPath,"/tmp/pifm-",10);
+	strncpy(newTask->tempPath+10+i,".mov",4);
+	newTask->tempPath[i+14] = '\0';
 	id = newTask->id;
-	i += 4;
+	i += 9;
 	do
 	{
 		newTask->tempPath[i--] = '0'+(id%10);
 	}while((id/=10) != 0);
 
-	/* Ajout à la fin de la liste */
+	/* Ajout à la fin de la liste chainée */
 	if(tasktowait == NULL)
 		tasktowait = newTask;
 	else
@@ -46,5 +47,26 @@ void co_start(int id, char *realPath)
 		temp->next = newTask;
 	}
 	
-	/* TODO: fork */
+	/* Fork */
+	switch(newTask->pid = fork())
+	{
+		/* Si le fork échoue */
+		case -1:
+			fprintf(stderr,"Erreur de fork");
+			ev_end();
+			break;
+			
+		case 0:
+			/* Lbération de la mémoire */
+			ev_end();
+
+			/* Recouvrement pour la conversion */
+			execlp("ffmpeg","ffmpeg", "-v", "0", "-i", newTask->realPath, "-f", "s16le", "-ar", "22.05k", "-ac", "1", newTask->tempPath, NULL);
+			exit(-2);
+			break;
+
+		default:
+			
+			break;
+	}
 }
