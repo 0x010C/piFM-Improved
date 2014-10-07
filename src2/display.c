@@ -56,6 +56,8 @@ void di_updatePlaylist(const int firstIndex, const int selectedIndex, const int 
 
 void di_updateFilelist(const int firstIndex, const int selectedIndex)
 {
+	/* TODO: Problèmes multiples quand un fichier est accentué (solution : w_char ?) */
+	/* TODO: problème de défilement au mauvais endroit */
 	int index, line, j;
 	
 	attron(COLOR_PAIR(1));

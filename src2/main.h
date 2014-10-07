@@ -22,6 +22,7 @@ typedef enum Bool Bool;
 #include "conversion.h"
 #include "event.h"
 #include <ncurses.h>
+#include <pthread.h>
 
 
 /*
@@ -38,6 +39,7 @@ PlayList *playlist;
 FileList *filelist;
 Param *param;
 TaskToWait *tasktowait;
+pthread_t *coThread;
 
 
 #endif

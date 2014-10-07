@@ -1,13 +1,25 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+
 #include <unistd.h>
+#include <pthread.h>
 
 #include "conversion.h"
 
 void co_init()
 {
+	/* Création du thread de conversion */
+	pthread_create(coThread, NULL, co_loop, NULL);
+}
 
+void *co_loop(void *notUsed)
+{
+	while(param->sigEnd == False)
+	{
+		/* Mise en pause pour éviter une surcharge */
+		sleep(1);
+	}
 }
 
 void co_start(int id, char *realPath)

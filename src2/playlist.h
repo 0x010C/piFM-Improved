@@ -11,6 +11,7 @@ struct PlayList
 	int nbFile;
 	char **displayList;
 	char **pathList;
+	char **effList;
 };
 
 /*
@@ -27,6 +28,7 @@ void pl_add(char *path, char *file);
 void pl_addAll();
 void pl_remove(int index);
 void pl_removeAll();
+void pl_updateEffList();
 void pl_end();
 
 

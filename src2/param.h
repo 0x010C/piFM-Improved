@@ -18,6 +18,7 @@ struct Param
 	int frequence;
 	int playedIndex;
 	Mode mode;
+	Bool sigEnd;
 };
 
 

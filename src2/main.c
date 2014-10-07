@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <wait.h>
+#include <wait.h> /* Pour test */
 
 #include "main.h"
 
@@ -42,6 +42,7 @@ int main(int argc, char **argv)
 	filelist = NULL;
 	param = NULL;
 	tasktowait = NULL;
+	coThread = NULL;
 	
 	/* Parsage des arguments */
 	pa_parse(argc, argv);

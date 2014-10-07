@@ -13,6 +13,7 @@ void pa_init()
 		param->frequence = 1000;
 		param->playedIndex = -1;
 		param->mode = mo_file;
+		param->sigEnd = False;
 	}
 }
 
