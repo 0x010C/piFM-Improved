@@ -53,7 +53,7 @@ int main(int argc, char **argv)
 	
 	/* Début de la boucle de gestion des évènements */
 	ev_loop();
-	co_start(721, "/home/kiwi/Bureau/01-GypsyCab.mp3");
+	co_start(327, "/home/kiwi/Bureau/01-GypsyCab.mp3");
 	waitid(P_PID, tasktowait->pid, &ttt, WEXITED);
 	fprintf(stderr,"%d,%d",ttt.si_status,ttt.si_pid);
 #else

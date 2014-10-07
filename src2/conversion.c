@@ -63,7 +63,7 @@ void co_start(int id, char *realPath)
 
 	strncpy(copyPath, "/tmp/pifm-", 10);
 	strncpy(copyPath+10+i, realPath+j, strlen(realPath+j));
-	copyPath[i+10+j] = '\0';
+	copyPath[i+10+strlen(realPath+j)] = '\0';
 
 	id = newTask->index;
 	i += 9;
@@ -129,6 +129,8 @@ void co_remove(int index)
 {
 	TaskToWait *temp = tasktowait;
 	TaskToWait *prec = NULL;
+	if(temp == NULL)
+		return;
 	while(temp->next != NULL && temp->index != index)
 	{
 		prec = temp;
@@ -161,5 +163,20 @@ void co_changeIndex(int oldIndex, int newIndex)
 
 void co_end()
 {
+	TaskToWait *temp = tasktowait;
+	TaskToWait *next = NULL;
+	if(temp == NULL)
+		return;
+	else
+		next = temp->next;
+	while(temp != NULL)
+	{
+		co_fStop(temp->index);
+		free(temp->realPath);
+		free(temp->tempPath);
+		next = temp->next;
+		free(temp);
+		temp = next;
+	}
 	return;
 }
