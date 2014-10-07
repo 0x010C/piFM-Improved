@@ -30,7 +30,7 @@ void co_start(int id, char *realPath)
 	
 	/* Allocation et remplissage du chemin vers le fichier converti */
 	for(i=1;(id/=10) != 0;i++);
-	newTask->tempPath = (char*) malloc(sizeof(char)*(10+i+5)); // /tmp/pifm-789.mov\0 : 5 + 3 + 5 chars
+	newTask->tempPath = (char*) malloc(sizeof(char)*(10+i+5)); /* /tmp/pifm-789.mov\0 : 5 + 3 + 5 chars */
 	strncpy(newTask->tempPath,"/tmp/pifm-",10);
 	strncpy(newTask->tempPath+10+i,".mov",4);
 	newTask->tempPath[i+14] = '\0';

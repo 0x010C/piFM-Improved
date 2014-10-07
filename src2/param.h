@@ -5,12 +5,12 @@
 /*
  * Structures
  */
-typedef enum Mode Mode;
 enum Mode
 {
 	mo_file = 0,
 	mo_play = 1
 };
+typedef enum Mode Mode;
 
 typedef struct Param Param;
 struct Param

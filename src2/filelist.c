@@ -63,7 +63,7 @@ void fl_init(char *path)
 	closedir(rep);
 }
 
-int fl_compare(char *a, char *b) // TODO: Ne pas prendre en compte la casse dans le tri
+int fl_compare(char *a, char *b) /* TODO: Ne pas prendre en compte la casse dans le tri */
 {
 	/* Placage du dossier "./" avant "../" */
 	if(strcmp(a,"./") == 0)
@@ -110,7 +110,7 @@ Bool fl_changePath(int index)
 	int i;
 	
 	/* On verifie qu'il n'y ai pas d'erreur d'index */
-	if(index >= 0 && index < filelist->nbFile) //TODO: Vérifier également les doits sur le dossier
+	if(index >= 0 && index < filelist->nbFile) /* TODO: Vérifier également les doits sur le dossier */
 	{
 		/* Dans le cas du dossier "./", on ne fait rien */
 		if(index == 0)

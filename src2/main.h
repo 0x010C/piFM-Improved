@@ -4,12 +4,12 @@
 /*
  * Structures
  */
-typedef enum Bool Bool;
 enum Bool
 {
 	False = 0,
 	True = 1
 };
+typedef enum Bool Bool;
 
 
 /*
