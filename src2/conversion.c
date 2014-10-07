@@ -121,13 +121,27 @@ void co_start(int id, char *realPath)
 		default:
 			break;
 	}
-fprintf(stderr,"p");
-fflush(stderr);
+
 	free(copyPath);
 }
 
 void co_remove(int index)
 {
+	TaskToWait *temp = tasktowait;
+	TaskToWait *prec = NULL;
+	while(temp->next != NULL && temp->index != oldIndex)
+	{
+		prec = temp;
+		temp = temp->next;
+	}
+	if(temp->index == index)
+	{
+		free(temp->realPath);
+		free(temp->tempPath);
+		if(prec != NULL)
+			prec->next = temp->next;
+		free(temp);
+	}
 	return;
 }
 
@@ -138,7 +152,11 @@ void co_fStop(int index)
 
 void co_changeIndex(int oldIndex, int newIndex)
 {
-	return;
+	TaskToWait *temp = tasktowait;
+	while(temp->next != NULL && temp->index != oldIndex)
+		temp = temp->next;
+	if(temp->index == oldIndex)
+		temp->index = newIndex;
 }
 
 void co_end()
