@@ -129,7 +129,7 @@ void co_remove(int index)
 {
 	TaskToWait *temp = tasktowait;
 	TaskToWait *prec = NULL;
-	while(temp->next != NULL && temp->index != oldIndex)
+	while(temp->next != NULL && temp->index != index)
 	{
 		prec = temp;
 		temp = temp->next;

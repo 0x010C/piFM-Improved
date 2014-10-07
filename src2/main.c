@@ -41,7 +41,7 @@ int main(int argc, char **argv)
 {
 #ifndef __TEST__
 	/* Initialisation des variables globales */
-	siginfo_t ttt; //test
+	siginfo_t ttt;
 	playlist = NULL;
 	filelist = NULL;
 	param = NULL;
@@ -53,9 +53,9 @@ int main(int argc, char **argv)
 	
 	/* Début de la boucle de gestion des évènements */
 	ev_loop();
-	co_start(721, "/home/kiwi/Bureau/01-GypsyCab.mp3");//test
-	waitid(P_PID, tasktowait->pid, &ttt, WEXITED);//test
-	fprintf(stderr,"%d,%d",ttt.si_status,ttt.si_pid);//test
+	co_start(721, "/home/kiwi/Bureau/01-GypsyCab.mp3");
+	waitid(P_PID, tasktowait->pid, &ttt, WEXITED);
+	fprintf(stderr,"%d,%d",ttt.si_status,ttt.si_pid);
 #else
 	test();
 #endif
