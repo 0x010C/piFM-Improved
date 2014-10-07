@@ -65,8 +65,6 @@ void fl_init(char *path)
 
 int fl_compare(char *a, char *b) // TODO: Ne pas prendre en compte la casse dans le tri
 {
-	int i, A, B;
-	
 	/* Placage du dossier "./" avant "../" */
 	if(strcmp(a,"./") == 0)
 		return 0;
@@ -85,7 +83,7 @@ int fl_compare(char *a, char *b) // TODO: Ne pas prendre en compte la casse dans
 
 void fl_order()
 {
-	int maxLen = 0, i = 0;
+	int i = 0;
 	Bool finTri = False;
 	char *echange = NULL;
 	
@@ -109,7 +107,6 @@ void fl_order()
 Bool fl_changePath(int index)
 {
 	char *path = NULL;
-	DIR *rep;
 	int i;
 	
 	/* On verifie qu'il n'y ai pas d'erreur d'index */

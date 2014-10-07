@@ -25,6 +25,7 @@ struct TaskToWait
 /*
  * Functions' header
  */
+void co_init();
 void co_start(int id, char *realPath);
 void co_check();
 void co_remove();

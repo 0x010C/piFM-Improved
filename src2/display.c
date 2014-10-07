@@ -26,7 +26,7 @@ void di_refresh()
 	refresh();
 }
 
-void di_updatePlaylist(int firstIndex, int selectedIndex, int playedIndex)
+void di_updatePlaylist(const int firstIndex, const int selectedIndex, const int playedIndex)
 {
 	int index, line, j;
 	

@@ -29,7 +29,6 @@ int ev_loop()
 	int touche = ' ';
 	int fl_index = 0, fl_firstIndex = 0;
 	int pl_index = 0, pl_firstIndex = 0, pl_playedIndex = -1;
-	char *title = NULL;
 
 	ev_init();
 	while((touche=getch()) != 'q')

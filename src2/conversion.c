@@ -5,6 +5,11 @@
 
 #include "conversion.h"
 
+void co_init()
+{
+
+}
+
 void co_start(int id, char *realPath)
 {
 	int i;
