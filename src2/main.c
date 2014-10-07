@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <wait.h> /* Pour test */
+#include <sys/types.h>
 
 #include "main.h"
 
@@ -28,16 +29,19 @@ void T()
 
 void test()
 {
+	/*
 	ev_init();
 	co_start(721, "/home/kiwi/Bureau/01-GypsyCab.mp3");
-	wait(NULL);
-	ev_end();
+	waitid(P_PID, tasktowait->pid, &ttt, WEXITED);
+	fprintf(stderr,"%d,%d",ttt.si_status,ttt.si_pid);
+	ev_end();*/
 }
 
 int main(int argc, char **argv)
 {
 #ifndef __TEST__
 	/* Initialisation des variables globales */
+	siginfo_t ttt; //test
 	playlist = NULL;
 	filelist = NULL;
 	param = NULL;
@@ -49,6 +53,9 @@ int main(int argc, char **argv)
 	
 	/* Début de la boucle de gestion des évènements */
 	ev_loop();
+	co_start(721, "/home/kiwi/Bureau/01-GypsyCab.mp3");//test
+	waitid(P_PID, tasktowait->pid, &ttt, WEXITED);//test
+	fprintf(stderr,"%d,%d",ttt.si_status,ttt.si_pid);//test
 #else
 	test();
 #endif

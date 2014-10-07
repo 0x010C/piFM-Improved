@@ -11,6 +11,22 @@ enum Bool
 };
 typedef enum Bool Bool;
 
+enum Mode
+{
+	mo_file = 0,
+	mo_play = 1
+};
+typedef enum Mode Mode;
+
+typedef struct Param Param;
+struct Param
+{
+	int frequence;
+	int playedIndex;
+	Mode mode;
+	Bool sigEnd;
+};
+
 
 /*
  * Includes
