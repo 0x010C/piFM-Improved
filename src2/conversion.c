@@ -4,6 +4,7 @@
 
 #include <unistd.h>
 #include <pthread.h>
+#include <signal.h>
 
 #include "conversion.h"
 
@@ -142,6 +143,8 @@ void co_remove(int index)
 		free(temp->tempPath);
 		if(prec != NULL)
 			prec->next = temp->next;
+		else
+			tasktowait = temp->next;
 		free(temp);
 	}
 	return;
@@ -149,6 +152,13 @@ void co_remove(int index)
 
 void co_fStop(int index)
 {
+	TaskToWait *temp = tasktowait;
+	if(temp == NULL)
+		return;
+	while(temp->next != NULL && temp->index != index)
+		temp = temp->next;
+	if(temp->index == index)
+		kill(temp->pid, SIGKILL);
 	return;
 }
 
