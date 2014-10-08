@@ -25,6 +25,7 @@ struct Param
 	int playedIndex;
 	Mode mode;
 	Bool sigEnd;
+	int absIndex;
 };
 
 
@@ -55,7 +56,7 @@ PlayList *playlist;
 FileList *filelist;
 Param *param;
 TaskToWait *tasktowait;
-pthread_t *coThread;
+pthread_t coThread;
 
 
 #endif

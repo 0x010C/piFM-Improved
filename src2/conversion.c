@@ -3,25 +3,63 @@
 #include <string.h>
 
 #include <unistd.h>
+#include <wait.h>
 #include <pthread.h>
 #include <signal.h>
+#include <sys/types.h>
 
 #include "conversion.h"
 
 void co_init()
 {
 	/* Création du thread de conversion */
-	pthread_create(coThread, NULL, co_loop, NULL);
+	pthread_create(&coThread, NULL, co_loop, (void*) NULL);
 }
 
 void *co_loop(void *notUsed)
 {
+	int i;
+	TaskToWait *temp;
+	siginfo_t status;
+	
 	while(param->sigEnd == False)
 	{
 		/* Mise en pause pour éviter une surcharge */
 		sleep(1);
+		
 		/* Recherche de nouveautés */
+		for(i=0;i<playlist->nbFile;i++)
+		{
+			if(playlist->state[i] == 0)
+			{
+				/* Indication que cette musique est en train d'être converti */
+				playlist->state[i] = 1;
+				
+				/* Lancment de la convertion */
+				co_start(i, playlist->pathList[i]);
+			}
+		}
+		
+		/* Recherche de processus finis */
+		temp = tasktowait;
+		while(temp != NULL)
+		{
+			status.si_pid = 0;
+			waitid(P_PID, temp->pid, &status, WEXITED | WNOHANG);
+			if(status.si_pid != 0)
+			{
+				pl_updateEffList(temp->index, temp->tempPath);
+				if(status.si_status == 0)
+					playlist->state[temp->index] = 2;
+				else
+					playlist->state[temp->index] = -1;
+				co_remove(temp->index);
+			}
+			temp = temp->next;
+		}
 	}
+	co_end();
+	
 	return NULL;
 }
 
@@ -48,6 +86,7 @@ void co_start(int id, char *realPath)
 	newTask->realPath[strlen(realPath)] = '\0';
 
 	/* Allocation du chemin vers le fichier converti */
+	id = param->absIndex;
 	for(i=1;(id/=10) != 0;i++);
 	newTask->tempPath = (char*) malloc(sizeof(char)*(10+i+5)); /* /tmp/pifm-789.mov\0 : 10 + 3 + 5 chars */
 
@@ -66,7 +105,7 @@ void co_start(int id, char *realPath)
 	strncpy(copyPath+10+i, realPath+j, strlen(realPath+j));
 	copyPath[i+10+strlen(realPath+j)] = '\0';
 
-	id = newTask->index;
+	id = param->absIndex;
 	i += 9;
 	do
 	{
@@ -95,13 +134,14 @@ void co_start(int id, char *realPath)
 			break;
 			
 		case 0:
+fprintf(stderr, "#%2d#%s\n", newTask->index, realPath);
 			/* Copie du fichier vers /tmp/ */
 			if((oldFile = fopen(realPath, "rb")) == NULL)
-				exit(-1);
+				exit(42);
 			if((newFile=fopen(copyPath, "wb")) == NULL)
 			{
 				fclose(oldFile);
-				exit(-2);
+				exit(43);
 			}
 
 			caractere = fgetc(oldFile);
@@ -116,13 +156,14 @@ void co_start(int id, char *realPath)
 
 			/* Recouvrement pour la conversion */
 			execlp("soundconverter","soundconverter", "-b", "-m", "audio/x-wav", "-s", ".wav", "-q", copyPath, NULL);
-			exit(-42);
+			exit(45);
 			break;
 
 		default:
 			break;
 	}
 
+	param->absIndex++;
 	free(copyPath);
 }
 

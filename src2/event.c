@@ -16,6 +16,7 @@ void ev_init()
 	di_init();
 	fl_init("/");
 	pl_init();
+	co_init();
 
 	/* Génération de l'affichage de départ */
 	di_updateBoxing("/","Playlist");
@@ -127,6 +128,9 @@ int ev_loop()
 
 void ev_end()
 {
+	param->sigEnd = True;
+	pthread_join(coThread, NULL);
+	
 	di_end();
 	fl_end();
 	pl_end();

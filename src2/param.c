@@ -14,6 +14,7 @@ void pa_init()
 		param->playedIndex = -1;
 		param->mode = mo_file;
 		param->sigEnd = False;
+		param->absIndex = 1;
 	}
 }
 
