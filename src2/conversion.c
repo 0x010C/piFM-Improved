@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <fcntl.h>
 #include <unistd.h>
 #include <wait.h>
 #include <pthread.h>
@@ -18,48 +19,66 @@ void co_init()
 
 void *co_loop(void *notUsed)
 {
-	int i;
+	int i, nbRunningProcess = 0;
 	TaskToWait *temp;
 	siginfo_t status;
-	
+
 	while(param->sigEnd == False)
 	{
 		/* Mise en pause pour éviter une surcharge */
 		sleep(1);
-		
+
 		/* Recherche de nouveautés */
 		for(i=0;i<playlist->nbFile;i++)
 		{
-			if(playlist->state[i] == 0)
+			/* Si on trouve une musique nouvelle ajouté à la playlist, et qu'on a pas encore atteint la limite de processus */
+			if(playlist->state[i] == 0 && nbRunningProcess < param->maxRunningProcess)
 			{
 				/* Indication que cette musique est en train d'être converti */
 				playlist->state[i] = 1;
-				
+
+				/* Comptage du nombre de processus actuellement en route */
+				nbRunningProcess++;
+
 				/* Lancment de la convertion */
 				co_start(i, playlist->pathList[i]);
 			}
 		}
-		
+
 		/* Recherche de processus finis */
 		temp = tasktowait;
 		while(temp != NULL)
 		{
+			/* On vérifie si le processus de pid "temp->pid" a fini ou non */
 			status.si_pid = 0;
 			waitid(P_PID, temp->pid, &status, WEXITED | WNOHANG);
+			
+			/* S'il a fini */
 			if(status.si_pid != 0)
 			{
-				pl_updateEffList(temp->index, temp->tempPath);
+				/* On vérifie si le processus c'est fini correctement ou non */
 				if(status.si_status == 0)
+				{
+					/* On enregistre le lien vers la musique converti dans la structure playlist */
+					pl_updateEffList(temp->index, temp->tempPath);
+					/* 2 = conversion effectué avec succes */
 					playlist->state[temp->index] = 2;
+				}
 				else
+					/* -1 = erreur dans la conversion */
 					playlist->state[temp->index] = -1;
+
+				/* Le processus étant fini, on peut le retirer de TaskToWait */
 				co_remove(temp->index);
+
+				/* Et on met à jour le compteur de processus actif */
+				nbRunningProcess--;
 			}
 			temp = temp->next;
 		}
 	}
 	co_end();
-	
+
 	return NULL;
 }
 
@@ -67,6 +86,7 @@ void co_start(int id, char *realPath)
 {
 	int i, j;
 	int  caractere;
+	int devNull;
 	FILE *oldFile = NULL;
 	FILE *newFile = NULL;
 	TaskToWait *newTask = NULL;
@@ -132,9 +152,8 @@ void co_start(int id, char *realPath)
 			fprintf(stderr,"Erreur de fork");
 			ev_end();
 			break;
-			
+
 		case 0:
-fprintf(stderr, "#%2d#%s\n", newTask->index, realPath);
 			/* Copie du fichier vers /tmp/ */
 			if((oldFile = fopen(realPath, "rb")) == NULL)
 				exit(42);
@@ -147,12 +166,16 @@ fprintf(stderr, "#%2d#%s\n", newTask->index, realPath);
 			caractere = fgetc(oldFile);
 			while(!feof(oldFile))
 			{
-					fputc(caractere, newFile);
-					caractere = fgetc(oldFile);
+				fputc(caractere, newFile);
+				caractere = fgetc(oldFile);
 			}
 
 			fclose(newFile);
 			fclose(oldFile);
+
+			/* Redirection de STDOUT vers /dev/null */
+			devNull = open("/dev/null", O_WRONLY);
+			dup2(devNull, STDOUT_FILENO);
 
 			/* Recouvrement pour la conversion */
 			execlp("soundconverter","soundconverter", "-b", "-m", "audio/x-wav", "-s", ".wav", "-q", copyPath, NULL);

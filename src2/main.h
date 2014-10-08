@@ -26,6 +26,7 @@ struct Param
 	Mode mode;
 	Bool sigEnd;
 	int absIndex;
+	int maxRunningProcess;
 };
 
 

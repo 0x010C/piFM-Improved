@@ -15,6 +15,7 @@ void pa_init()
 		param->mode = mo_file;
 		param->sigEnd = False;
 		param->absIndex = 1;
+		param->maxRunningProcess = 4;
 	}
 }
 
