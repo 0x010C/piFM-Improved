@@ -13,6 +13,7 @@ void pl_init()
 		playlist->displayList = NULL;
 		playlist->pathList = NULL;
 		playlist->effList = NULL;
+		playlist->state = NULL;
 	}
 }
 
@@ -25,30 +26,37 @@ void pl_add(char *path, char *file)
 		if(strncmp(playlist->pathList[i], path, strlen(path)) == 0 && strcmp(playlist->displayList[i], file) == 0)
 			return;
 
-	/* Allocation des cases de tableau supplémentaire */
+	/* Allocation des cases de tableaux supplémentaire */
 	if(playlist->displayList == NULL)
 	{
 		playlist->displayList = (char**) malloc(sizeof(char*));
 		playlist->pathList = (char**) malloc(sizeof(char*));
+		playlist->effList = (char**) malloc(sizeof(char*));
+		playlist->state = (int*) malloc(sizeof(int));
 	}
 	else
 	{
 		playlist->displayList = (char**) realloc(playlist->displayList, sizeof(char*)*(playlist->nbFile+1));
 		playlist->pathList = (char**) realloc(playlist->pathList, sizeof(char*)*(playlist->nbFile+1));
 		playlist->effList = (char**) realloc(playlist->effList, sizeof(char*)*(playlist->nbFile+1));
+		playlist->state = (int*) realloc(playlist->state, sizeof(int*)*(playlist->nbFile+1));
 	}
 
-	/* Allocation des 3 nouvelles chaines de caractères */
+	/* Allocation des 2 nouvelles chaines de caractères */
 	playlist->displayList[playlist->nbFile] = (char*) malloc(sizeof(char)*(strlen(file)+1));
 	playlist->pathList[playlist->nbFile] = (char*) malloc(sizeof(char)*(strlen(path)+strlen(file)+1));
-	playlist->effList[playlist->nbFile] = NULL;
 
 	/* Copie des valeurs dans le tableau */
 	strncpy(playlist->displayList[playlist->nbFile],file,strlen(file));
 	playlist->displayList[playlist->nbFile][strlen(file)] = '\0';
+	
 	strncpy(playlist->pathList[playlist->nbFile],path,strlen(path));
 	strncpy(playlist->pathList[playlist->nbFile]+strlen(path),file,strlen(file));
 	playlist->pathList[playlist->nbFile][strlen(path)+strlen(file)] = '\0';
+	
+	playlist->effList[playlist->nbFile] = NULL;
+
+	playlist->state[playlist->nbFile] = 0;
 
 	/* Enregistrement du nouveau nombre de fichiers */
 	playlist->nbFile++;
@@ -81,12 +89,14 @@ void pl_remove(int index)
 			playlist->displayList[i] = playlist->displayList[i+1];
 			playlist->pathList[i] = playlist->pathList[i+1];
 			playlist->effList[i] = playlist->effList[i+1];
+			playlist->state[i] = playlist->state[i+1];
 			co_changeIndex(i+1,i);
 		}
 		playlist->nbFile--;
 		playlist->displayList = (char**) realloc(playlist->displayList, sizeof(char*)*playlist->nbFile);
 		playlist->pathList = (char**) realloc(playlist->pathList, sizeof(char*)*playlist->nbFile);
 		playlist->effList = (char**) realloc(playlist->effList, sizeof(char*)*playlist->nbFile);
+		playlist->state = (int*) realloc(playlist->state, sizeof(int)*playlist->nbFile);
 	}
 }
 
@@ -108,9 +118,11 @@ void pl_removeAll()
 		free(playlist->displayList);
 		free(playlist->pathList);
 		free(playlist->effList);
+		free(playlist->state);
 		playlist->displayList = NULL;
 		playlist->pathList = NULL;
 		playlist->effList = NULL;
+		playlist->state = NULL;
 	}
 	
 }
@@ -118,7 +130,7 @@ void pl_removeAll()
 void pl_updateEffList(int index, char *str)
 {
 	/* Contrôle de la validité de l'index */
-	if(index >= playlist->nbFile)
+	if(index >= playlist->nbFile || index < 0)
 		return;
 	/* Si une affectation a déjà été faite, on ne change rien */
 	if(playlist->effList[index] != NULL)
@@ -148,6 +160,7 @@ void pl_end()
 			free(playlist->displayList);
 			free(playlist->pathList);
 			free(playlist->effList);
+			free(playlist->state);
 		}
 		free(playlist);
 		playlist = NULL;

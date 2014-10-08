@@ -12,7 +12,9 @@ struct PlayList
 	char **displayList;
 	char **pathList;
 	char **effList;
+	int *state; /* 0: non-traité | 1: en cours de traitement | 2: traité | -1: erreur */
 };
+
 
 /*
  * Includes

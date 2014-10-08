@@ -20,7 +20,7 @@ void *co_loop(void *notUsed)
 	{
 		/* Mise en pause pour éviter une surcharge */
 		sleep(1);
-		/* ... */
+		/* Recherche de nouveautés */
 	}
 	return NULL;
 }
