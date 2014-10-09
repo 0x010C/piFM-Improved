@@ -84,6 +84,7 @@ void pl_remove(int index)
 		free(playlist->displayList[index]);
 		free(playlist->pathList[index]);
 		co_fStop(index);
+		co_remove(index);
 		for(i=index;i<playlist->nbFile-1;i++)
 		{
 			playlist->displayList[i] = playlist->displayList[i+1];

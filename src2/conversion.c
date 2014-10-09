@@ -173,7 +173,7 @@ void co_start(int id, char *realPath)
 			fclose(newFile);
 			fclose(oldFile);
 
-			/* Redirection de STDOUT vers /dev/null */
+			/* Redirection de STDOUT et de STDERR vers /dev/null */
 			devNull = open("/dev/null", O_WRONLY);
 			dup2(devNull, STDOUT_FILENO);
 			dup2(devNull, STDERR_FILENO);
@@ -230,6 +230,8 @@ void co_fStop(int index)
 void co_changeIndex(int oldIndex, int newIndex)
 {
 	TaskToWait *temp = tasktowait;
+	if(temp == NULL)
+		return;
 	while(temp->next != NULL && temp->index != oldIndex)
 		temp = temp->next;
 	if(temp->index == oldIndex)
