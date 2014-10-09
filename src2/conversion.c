@@ -32,7 +32,7 @@ void *co_loop(void *notUsed)
 		for(i=0;i<playlist->nbFile;i++)
 		{
 			/* Si on trouve une musique nouvelle ajouté à la playlist, et qu'on a pas encore atteint la limite de processus */
-			if(playlist->state[i] == 0 && nbRunningProcess < param->maxRunningProcess)
+			if(playlist->state[i] == 0 && (nbRunningProcess < param->maxRunningProcess || param->maxRunningProcess == 0))
 			{
 				/* Indication que cette musique est en train d'être converti */
 				playlist->state[i] = 1;

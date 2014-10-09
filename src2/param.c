@@ -23,7 +23,7 @@ void pa_init()
 void pa_parse(int argc, char **argv)
 {
 	int i;
-	int f=0;
+	int buf=0;
 
 	/* On initialise la variable global param */
 	if(param == NULL)
@@ -36,9 +36,25 @@ void pa_parse(int argc, char **argv)
 		if(strcmp(argv[i],"-f") == 0 && i+1<argc)
 		{
 			i++;
-			f = strtof(argv[i],NULL)*10;
-			if(f >= 875 && f <= 1080)
-				param->frequence = f;
+			buf = strtof(argv[i],NULL)*10;
+			if(buf >= 875 && buf <= 1080)
+				param->frequence = buf;
+		}
+		/* Si le paramètre est "-p" */
+		else if(strcmp(argv[i],"-p") == 0 && i+1<argc)
+		{
+			i++;
+			buf = strtod(argv[i],NULL);
+			if(buf >= 0)
+				param->maxRunningProcess = buf;
+		}
+		/* Si le paramètre est "-t" */
+		else if(strcmp(argv[i],"-t") == 0 && i+1<argc)
+		{
+			i++;
+			buf = strtod(argv[i],NULL);
+			if(buf >= 0)
+				param->maxRunningProcess = buf;
 		}
 	}
 }
