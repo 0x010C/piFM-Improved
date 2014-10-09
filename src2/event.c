@@ -41,7 +41,7 @@ int ev_loop()
 				{
 					case KEY_DOWN: /* Flèche bas */
 						fl_index += (fl_index < filelist->nbFile-1);
-						fl_firstIndex += (fl_index+fl_firstIndex > HEIGHT-3 && fl_firstIndex+HEIGHT-2 < filelist->nbFile);
+						fl_firstIndex += (fl_index > fl_firstIndex+HEIGHT-2-1);
 						break;
 
 					case KEY_UP: /* Flèche haut */
@@ -85,7 +85,7 @@ int ev_loop()
 				{
 					case KEY_DOWN: /* Flèche bas */
 						pl_index += (pl_index < playlist->nbFile-1);
-						pl_firstIndex += (pl_index+pl_firstIndex > HEIGHT-3 && pl_firstIndex+HEIGHT-2 < playlist->nbFile);
+						pl_firstIndex += (pl_index > pl_firstIndex+HEIGHT-2-1);
 						break;
 
 					case KEY_UP: /* Flèche haut */
