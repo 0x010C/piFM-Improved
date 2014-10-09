@@ -27,6 +27,7 @@ struct Param
 	Bool sigEnd;
 	int absIndex;
 	int maxRunningProcess;
+	int timeBetweenTwoConverts;
 };
 
 

@@ -26,7 +26,7 @@ void *co_loop(void *notUsed)
 	while(param->sigEnd == False)
 	{
 		/* Mise en pause pour éviter une surcharge */
-		sleep(1);
+		sleep(param->timeBetweenTwoConverts);
 
 		/* Recherche de nouveautés */
 		for(i=0;i<playlist->nbFile;i++)

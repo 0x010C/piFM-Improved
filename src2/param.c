@@ -16,6 +16,7 @@ void pa_init()
 		param->sigEnd = False;
 		param->absIndex = 1;
 		param->maxRunningProcess = 4;
+		param->timeBetweenTwoConverts = 1;
 	}
 }
 
