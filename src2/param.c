@@ -20,17 +20,18 @@ void pa_init()
 	}
 }
 
-void pa_parse(int argc, char **argv)
+Bool pa_parse(int argc, char **argv)
 {
 	int i;
 	int buf=0;
+	Bool returnValue = True;
 
 	/* On initialise la variable global param */
 	if(param == NULL)
 		pa_init();
 	
 	/* On analyse chaque arguments un par un */
-	for(i=0;i<argc;i++)
+	for(i=1;i<argc;i++)
 	{
 		/* Si le paramètre est "-f" */
 		if(strcmp(argv[i],"-f") == 0 && i+1<argc)
@@ -56,7 +57,14 @@ void pa_parse(int argc, char **argv)
 			if(buf >= 0)
 				param->maxRunningProcess = buf;
 		}
+		else
+		{
+			fprintf(stderr, "Error : Invalid Parameter \"%s\"\n", argv[i]);
+			returnValue = False;
+		}
 	}
+
+	return returnValue;
 }
 
 void pa_end()

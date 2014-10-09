@@ -12,7 +12,7 @@
  * Functions' header
  */
 void pa_init();
-void pa_parse(int argc, char **argv);
+Bool pa_parse(int argc, char **argv);
 void pa_end();
 
 

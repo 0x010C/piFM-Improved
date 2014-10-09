@@ -41,11 +41,12 @@ int main(int argc, char **argv)
 	tasktowait = NULL;
 	coThread = 0;
 	
-	/* Parsage des arguments */
-	pa_parse(argc, argv);
-	
-	/* Début de la boucle de gestion des évènements */
-	ev_loop();
+	/* Vérification et Parsage des arguments */
+	if(pa_parse(argc, argv) == True)
+		/* Début de la boucle de gestion des évènements */
+		ev_loop();
+	else
+		pa_end();
 #else
 	test();
 #endif

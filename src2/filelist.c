@@ -204,7 +204,7 @@ Bool isDirectory(char *dir)
 
 Bool isMusic(char *file)
 {
-	/* TODO: Vérifier les droits */
+	/* TODO: Vérifier les droits du fichier */
 	/* TODO: Vérifier le type MIME */
 	int i;
 	char *path = NULL;
