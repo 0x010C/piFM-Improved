@@ -176,6 +176,7 @@ void co_start(int id, char *realPath)
 			/* Redirection de STDOUT vers /dev/null */
 			devNull = open("/dev/null", O_WRONLY);
 			dup2(devNull, STDOUT_FILENO);
+			dup2(devNull, STDERR_FILENO);
 
 			/* Recouvrement pour la conversion */
 			execlp("soundconverter","soundconverter", "-b", "-m", "audio/x-wav", "-s", ".wav", "-q", copyPath, NULL);
