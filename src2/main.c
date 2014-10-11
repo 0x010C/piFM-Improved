@@ -40,7 +40,9 @@ int main(int argc, char **argv)
 	param = NULL;
 	tasktowait = NULL;
 	coThread = 0;
-	
+	lpThread = 0;
+	plPID = 0;
+
 	/* Vérification et Parsage des arguments */
 	if(pa_parse(argc, argv) == True)
 		/* Début de la boucle de gestion des évènements */

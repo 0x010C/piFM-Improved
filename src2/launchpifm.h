@@ -11,6 +11,7 @@
 /*
  * Functions' header
  */
+void lp_start();
 void lp_loop();
 void lp_pause();
 void lp_ontinue();

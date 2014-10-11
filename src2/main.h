@@ -59,6 +59,9 @@ FileList *filelist;
 Param *param;
 TaskToWait *tasktowait;
 pthread_t coThread;
+pthread_t lpThread;
+int lpPID;
+
 
 
 #endif
