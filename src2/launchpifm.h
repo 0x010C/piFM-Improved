@@ -12,9 +12,9 @@
  * Functions' header
  */
 void lp_start();
-void lp_loop();
+void lp_continue();
+void *lp_loop(void *notUsed);
 void lp_pause();
-void lp_ontinue();
 void lp_stop();
 
 

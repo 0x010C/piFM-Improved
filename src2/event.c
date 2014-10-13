@@ -29,7 +29,7 @@ int ev_loop()
 {
 	int touche = ' ';
 	int fl_index = 0, fl_firstIndex = 0;
-	int pl_index = 0, pl_firstIndex = 0, pl_playedIndex = -1;
+	int pl_index = 0, pl_firstIndex = 0;
 
 	ev_init();
 	while((touche=getch()) != 'q')
@@ -94,8 +94,20 @@ int ev_loop()
 						break;
 
 					case '\n': /* Entrer */
-						pl_playedIndex = pl_index;
-						/* Lire le fichier */
+						lp_stop();
+						param->playedIndex = pl_index;
+						lp_start();
+						break;
+					
+					case ' ': /* Espace */
+						if(lpThread == 0)
+							lp_continue();
+						else
+							lp_pause();
+						break;
+					
+					case 's': /* s */
+						lp_stop();
 						break;
 
 					case '\t': /* Tab */
@@ -104,13 +116,16 @@ int ev_loop()
 
 					case 'c': /* c */
 						pl_remove(pl_index);
+						if(pl_index == param->playedIndex)
+							lp_stop();
 						break;
 
 					case 'C': /* C */
 						pl_removeAll();
 						pl_index = 0;
 						pl_firstIndex = 0;
-						pl_playedIndex = -1;
+						
+						lp_stop();
 						break;
 				}
 				break;
@@ -118,7 +133,7 @@ int ev_loop()
 
 		di_updateBoxing(filelist->currentPath, "Playlist");
 		di_updateFilelist(fl_firstIndex, fl_index);
-		di_updatePlaylist(pl_firstIndex, pl_index, pl_playedIndex);
+		di_updatePlaylist(pl_firstIndex, pl_index, param->playedIndex);
 		di_refresh();
 	}
 	ev_end();
@@ -130,6 +145,8 @@ void ev_end()
 {
 	param->sigEnd = True;
 	pthread_join(coThread, NULL);
+	if(lpThread != 0)
+		lp_stop();
 	
 	di_end();
 	fl_end();

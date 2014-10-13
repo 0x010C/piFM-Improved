@@ -39,6 +39,7 @@ struct Param
 #include "playlist.h"
 #include "display.h"
 #include "conversion.h"
+#include "launchpifm.h"
 #include "event.h"
 #include <ncurses.h>
 #include <pthread.h>

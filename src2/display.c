@@ -10,9 +10,10 @@ void di_init()
 	/*Initialisation de ncurses*/
 	initscr();
 	noecho();
-	keypad(stdscr,TRUE);
+	keypad(stdscr, TRUE);
 	curs_set(0);
 	start_color();
+	nodelay(stdscr, TRUE);
 
 	/*Mise en place des paires de couleurs*/
 	init_pair(1, COLOR_WHITE, COLOR_BLUE); /* Fond */

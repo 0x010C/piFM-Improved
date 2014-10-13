@@ -231,7 +231,7 @@ Bool isMusic(char *file)
 	while(file[i] != '.' && i > 0)
 		i--;
 	/* Test de l'extension */
-	if(strcmp(file+i,".mp3") == 0 || strcmp(file+i,".JPG") == 0)
+	if(strcmp(file+i,".mp3") == 0 || strcmp(file+i,".wav") == 0)
 		return True;
 #ifdef __ALLFILES__
 	return True;

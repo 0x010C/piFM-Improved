@@ -108,7 +108,7 @@ void co_start(int id, char *realPath)
 	/* Allocation du chemin vers le fichier converti */
 	id = param->absIndex;
 	for(i=1;(id/=10) != 0;i++);
-	newTask->tempPath = (char*) malloc(sizeof(char)*(10+i+5)); /* /tmp/pifm-789.mov\0 : 10 + 3 + 5 chars */
+	newTask->tempPath = (char*) malloc(sizeof(char)*(10+i+5)); /* /tmp/pifm-789.wav\0 : 10 + 3 + 5 chars */
 
 	/* Allocation du chemin vers la destination de la copie initial */
 	j=strlen(realPath)-1;
@@ -118,7 +118,7 @@ void co_start(int id, char *realPath)
 
 	/* Remplissage des deux chemins */
 	strncpy(newTask->tempPath, "/tmp/pifm-", 10);
-	strncpy(newTask->tempPath+10+i, ".mov", 4);
+	strncpy(newTask->tempPath+10+i, ".wav", 4);
 	newTask->tempPath[i+14] = '\0';
 
 	strncpy(copyPath, "/tmp/pifm-", 10);
