@@ -10,9 +10,9 @@
 /*
  * Defines
  */
-#define sizeLeft getmaxx(stdscr)/2
-#define sizeRight getmaxx(stdscr)/2+(getmaxx(stdscr)%2==1)
-#define height getmaxy(stdscr)
+#define SIZE_LEFT getmaxx(stdscr)/2
+#define SIZE_RIGHT getmaxx(stdscr)/2+(getmaxx(stdscr)%2==1)
+#define HEIGHT getmaxy(stdscr)
 
 
 /*
@@ -20,9 +20,9 @@
  */
 void di_init();
 void di_refresh();
-void di_updatePlayList(int firstIndex, int selectedIndex);
-void di_updateFileList(int firstIndex, int selectedIndex);
-void di_updateBoxing();
+void di_updatePlaylist(const int firstIndex, const int selectedIndex, const int playedIndex);
+void di_updateFilelist(const int firstIndex, const int selectedIndex);
+void di_updateBoxing(char *title1, char *title2);
 void di_end();
 
 

@@ -9,8 +9,12 @@ typedef struct PlayList PlayList;
 struct PlayList
 {
 	int nbFile;
-	char **list;
+	char **displayList;
+	char **pathList;
+	char **effList;
+	int *state; /* 0: non-traité | 1: en cours de traitement | 2: traité | -1: erreur */
 };
+
 
 /*
  * Includes
@@ -22,11 +26,11 @@ struct PlayList
  * Functions' header
  */
 void pl_init();
-void pl_add(char *filePath);
-void pl_addAll(char *filePath);
+void pl_add(char *path, char *file);
+void pl_addAll();
 void pl_remove(int index);
 void pl_removeAll();
-int pl_count();
+void pl_updateEffList();
 void pl_end();
 
 

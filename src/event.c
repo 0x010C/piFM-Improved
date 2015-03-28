@@ -5,55 +5,151 @@
 
 #include "main.h"
 
+void ev_break()
+{
+	getchar();
+}
+
+void ev_init()
+{
+	/* Initialisation des différents modules */
+	di_init();
+	fl_init("/");
+	pl_init();
+	co_init();
+
+	/* Génération de l'affichage de départ */
+	di_updateBoxing("/","Playlist");
+	di_updatePlaylist(0, 0, -1);
+	di_updateFilelist(0,0);
+	di_refresh();
+}
+
 int ev_loop()
 {
-	fl_init("/");
-	int firstIndex=0, selectedIndex=0;
 	int touche = ' ';
+	int fl_index = 0, fl_firstIndex = 0;
+	int pl_index = 0, pl_firstIndex = 0;
 
-	do
+	ev_init();
+	while((touche=getch()) != 'q')
 	{
-		switch(touche)
+		switch(param->mode)
 		{
-			case KEY_DOWN:
-				selectedIndex += (selectedIndex < filelist->nbFile-1);
-				while(selectedIndex > firstIndex+height-2-1)
-					firstIndex++;
-				break;
-				
-			case KEY_UP:
-				selectedIndex -= (selectedIndex > 0);
-				while(selectedIndex < firstIndex)
-					firstIndex--;
-				break;
-				
-			case KEY_STAB:
-				if(param->mode == mo_file)
-					param->mode = mo_play;
-				else
-					param->mode = mo_file;
-				firstIndex = 0;
-				selectedIndex = 0;
-				break;
-				
-			case KEY_ENTER:
-				if(param->mode == mo_file)
+			case mo_file:
+				switch(touche)
 				{
-					if(isDirectory(filelist->list[selectedIndex]))
-					{
-						fl_changePath(filelist->list[selectedIndex]);
-						firstIndex = 0;
-						selectedIndex = 0;
-					}
+					case KEY_DOWN: /* Flèche bas */
+						fl_index += (fl_index < filelist->nbFile-1);
+						fl_firstIndex += (fl_index > fl_firstIndex+HEIGHT-2-1);
+						break;
+
+					case KEY_UP: /* Flèche haut */
+						fl_index -= (fl_index > 0);
+						fl_firstIndex -= (fl_index < fl_firstIndex);
+						break;
+
+					case '\n': /* Entrer */
+						if(fl_changePath(fl_index))
+						{
+							fl_index = 0;
+							fl_firstIndex = 0;
+						}
+						break;
+
+					case KEY_BACKSPACE: /* Retour arrière */
+						if(fl_changePath(1))
+						{
+							fl_index = 0;
+							fl_firstIndex = 0;
+						}
+						break;
+
+					case '\t': /* Tab */
+						param->mode = mo_play;
+						break;
+
+					case 'a': /* a */
+						if(isMusic(filelist->list[fl_index]))
+							pl_add(filelist->currentPath, filelist->list[fl_index]);
+						break;
+
+					case 'A': /* A */
+						pl_addAll(fl_index);
+						break;
 				}
-				//else ...
+				break;
+			
+			case mo_play:
+				switch(touche)
+				{
+					case KEY_DOWN: /* Flèche bas */
+						pl_index += (pl_index < playlist->nbFile-1);
+						pl_firstIndex += (pl_index > pl_firstIndex+HEIGHT-2-1);
+						break;
+
+					case KEY_UP: /* Flèche haut */
+						pl_index -= (pl_index > 0);
+						pl_firstIndex -= (pl_index < pl_firstIndex);
+						break;
+
+					case '\n': /* Entrer */
+						lp_stop();
+						param->playedIndex = pl_index;
+						lp_start();
+						break;
+					
+					case ' ': /* Espace */
+						if(lpThread == 0)
+							lp_continue();
+						else
+							lp_pause();
+						break;
+					
+					case 's': /* s */
+						lp_stop();
+						break;
+
+					case '\t': /* Tab */
+						param->mode = mo_file;
+						break;
+
+					case 'c': /* c */
+						pl_remove(pl_index);
+						if(pl_index == param->playedIndex)
+							lp_stop();
+						break;
+
+					case 'C': /* C */
+						pl_removeAll();
+						pl_index = 0;
+						pl_firstIndex = 0;
+						
+						lp_stop();
+						break;
+				}
 				break;
 		}
-		di_updateBoxing();
-		di_updateFilelist(filelist, firstIndex, selectedIndex);
-		di_refresh();
-	} while((touche=getch()) != 'q');
 
-	fl_end();
+		di_updateBoxing(filelist->currentPath, "Playlist");
+		di_updateFilelist(fl_firstIndex, fl_index);
+		di_updatePlaylist(pl_firstIndex, pl_index, param->playedIndex);
+		di_refresh();
+	}
+	ev_end();
+	
 	return 0;
+}
+
+void ev_end()
+{
+	param->sigEnd = True;
+	pthread_join(coThread, NULL);
+	if(lpThread != 0)
+		lp_stop();
+	
+	di_end();
+	fl_end();
+	pl_end();
+	pa_end();
 }
