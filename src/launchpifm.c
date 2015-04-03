@@ -42,6 +42,7 @@ void lp_continue()
 void *lp_loop(void *notUsed)
 {
 	siginfo_t status;
+	char *buffer;
 	int devNull;
 
 	if(param->playedIndex < 0 || param->playedIndex >= playlist->nbFile)
@@ -68,8 +69,14 @@ void *lp_loop(void *notUsed)
 					devNull = open("/dev/null", O_WRONLY);
 					dup2(devNull, STDOUT_FILENO);
 					dup2(devNull, STDERR_FILENO);
-					
+					#ifdef TEST
 					execlp("cvlc", "cvlc", "--play-and-exit", playlist->effList[param->playedIndex], NULL);
+					#else
+					buffer = (char*) malloc(sizeof(char)*7);
+					sprintf(buffer, "%.2f", param->frequence);
+					execlp("pifm", "pifmp", playlist->effList[param->playedIndex], buffer, NULL);
+					free(buffer);
+					#endif
 					exit(2);
 					break;
 			}
