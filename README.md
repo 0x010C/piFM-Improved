@@ -1,12 +1,12 @@
 piFM-Improved
 =============
 
-Script qui ajoute plusieurs fonctionnalités à piFM
+Programme ajoutant plusieurs fonctionnalités à piFM :
+* Gestion d'une playlist et des fonctionnalités associés (Lecture, pause, stop,...) ;
+* Interface console (grâce à NCurses) ;
+* Conversion des fichiers en parallèle.
 
-TODO
+Todo
 ----
-
-* Passer d'un script shell à un programme en C
-* Préconvertir les musiques "en tâche de fond", au lieu de les convertir en direct et streamer
-* Interface graphique avec la bibliothèque "ncurses"
-* Gestion en continue des playlist et de la lecture
+* Fix problème d'affichage avec les fichiers accentués ;
+* Fix la lecture qui ne se stoppe pas tout le temps
