@@ -1,6 +1,6 @@
 ## Compilateur
 CC=gcc
-FLAGS=-Wall -Werror -pedantic -fpic
+FLAGS=-Wall -pedantic -fpic
 LIB=-lncurses -pthread
 # Main
 EXE=pifmp
